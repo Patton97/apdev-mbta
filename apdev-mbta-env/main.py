@@ -20,29 +20,36 @@ def runAPITest():
 def runPygameTest():
     import pygame
 
-    # pygame setup
     pygame.init()
     screen = pygame.display.set_mode((1280, 720))
     clock = pygame.time.Clock()
     running = True
 
+    # TODO: surely there's a better wayof doing this
+    MAX_FPS = 60
+    MAX_LED_PIN_ANIMATION_FRAME = MAX_FPS * 3
+    currentAnimationFrame = 0
     while running:
-        # poll for events
-        # pygame.QUIT event means the user clicked X to close your window
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        # fill the screen with a color to wipe away anything from last frame
-        screen.fill("black")
+        screen.fill('black')
 
-        pygame.draw.circle(screen, "green", pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2), 4)
+        if currentAnimationFrame > MAX_FPS * 2:
+            colour = 'chartreuse'
+            radius = 10
+        else:
+            colour = 'chartreuse4'
+            radius = 8
+        pygame.draw.circle(screen, colour, pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2), radius)
 
-
-        # flip() the display to put your work on screen
         pygame.display.flip()
 
-        clock.tick(60)  # limits FPS to 60
+        currentAnimationFrame += 1
+        if currentAnimationFrame == MAX_LED_PIN_ANIMATION_FRAME:
+            currentAnimationFrame = 0
+        clock.tick(MAX_FPS)
 
     pygame.quit()
 
