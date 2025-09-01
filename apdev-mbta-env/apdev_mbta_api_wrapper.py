@@ -39,3 +39,16 @@ class GetStopsParams(object):
             'sort':  self.sort,
             'filter[route_type]' : ','.join(map(str, self.routeTypes)),
         }
+
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class ImmutableStop:
+    name: str
+
+def parseResultsJson(jsonObj:dict)->list:
+    results = []
+    for item in jsonObj["data"]:
+        # TODO: Triage/Chain of Command pattern here to handle all types elegantly
+        results.append(ImmutableStop(item["attributes"]["description"]))
+    return results
