@@ -3,6 +3,7 @@ from __future__ import annotations
 import pygame
 
 from .LEDPin import LEDPin
+from .LEDPinDecorator import LEDPinDecorator
 
 class LEDVisualiser(object):
     def start(self:LEDVisualiser):
@@ -16,12 +17,20 @@ class LEDVisualiser(object):
 
         MAX_FPS = 60
 
-        pin = LEDPin()
-        pin.position = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
-        pin.onColour = 'chartreuse'
-        pin.offColour = 'chartreuse4'
-        pin.onRadius = 10
-        pin.offRadius = 8
+        greenLinePinDecorator = LEDPinDecorator()
+        greenLinePinDecorator.onColour = 'chartreuse'
+        greenLinePinDecorator.offColour = 'chartreuse4'
+        greenLinePinDecorator.onRadius = 10
+        greenLinePinDecorator.offRadius = 8
+
+        pinPositions = [pygame.Vector2(50, 670), pygame.Vector2(75, 645)]
+        pins:list[LEDPin] = []
+
+        for pinPosition in pinPositions:
+            pin = LEDPin()
+            pin.position = pinPosition
+            greenLinePinDecorator.decorate(pin)
+            pins.append(pin)
 
         deltaTime = 1 / MAX_FPS * 1000
         while running:
@@ -31,8 +40,9 @@ class LEDVisualiser(object):
 
             screen.fill('black')
 
-            pin.updateTick(deltaTime)
-            pin.renderTick(screen)
+            for pin in pins:
+                pin.updateTick(deltaTime)
+                pin.renderTick(screen)
 
             pygame.display.flip()
 
