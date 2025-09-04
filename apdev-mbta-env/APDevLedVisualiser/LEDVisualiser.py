@@ -3,46 +3,42 @@ from __future__ import annotations
 import pygame
 
 from .LEDPin import LEDPin
-from .LEDPinDecorator import LEDPinDecorator
 
 class LEDVisualiser(object):
+    objects:list[LEDPin] = []
+
+    __screen:pygame.Surface = None
+
+    def __init__(self):
+        pygame.init()
+
+    def setScreenSize(self:LEDVisualiser, width:int, height:int):
+        self.__screen = pygame.display.set_mode((width, height))
+
+    def addToCanvas(self:LEDVisualiser, objectToAdd):
+        self.objects.append(objectToAdd)
+
     def start(self:LEDVisualiser):
         self.loop()
 
     def loop(self:LEDVisualiser):
         pygame.init()
-        screen = pygame.display.set_mode((1280, 720))
         clock = pygame.time.Clock()
         running = True
 
         MAX_FPS = 60
-
-        greenLinePinDecorator = LEDPinDecorator()
-        greenLinePinDecorator.onColour = 'chartreuse'
-        greenLinePinDecorator.offColour = 'chartreuse4'
-        greenLinePinDecorator.onRadius = 10
-        greenLinePinDecorator.offRadius = 8
-
-        pinPositions = [pygame.Vector2(50, 670), pygame.Vector2(75, 645)]
-        pins:list[LEDPin] = []
-
-        for pinPosition in pinPositions:
-            pin = LEDPin()
-            pin.position = pinPosition
-            greenLinePinDecorator.decorate(pin)
-            pins.append(pin)
-
         deltaTime = 1 / MAX_FPS * 1000
+        
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
 
-            screen.fill('black')
+            self.__screen.fill('black')
 
-            for pin in pins:
-                pin.updateTick(deltaTime)
-                pin.renderTick(screen)
+            for object in self.objects:
+                object.updateTick(deltaTime)
+                object.renderTick(self.__screen)
 
             pygame.display.flip()
 

@@ -10,6 +10,8 @@ class LEDPin(object):
     onRadius = 0
     offRadius = 0
 
+    label = 'label'
+
     timeUntilNextAnimationStage = 0
 
     def configureAnimationStage0(self:LEDPin, dt:float):
@@ -36,4 +38,5 @@ class LEDPin(object):
 
     def renderTick(self:LEDPin, screen:pygame.Surface):        
         pygame.draw.circle(screen, self.colour, self.position, self.radius)
-        return
+        text = pygame.font.Font('freesansbold.ttf', 12).render(self.label, True, 'white')
+        screen.blit(text, pygame.rect.Rect(self.position.x + self.onRadius + 4, self.position.y - self.onRadius/2, 0,0))

@@ -18,5 +18,20 @@ def runAPITest():
         print(result.name)
 
 from APDevLedVisualiser.LEDVisualiser import LEDVisualiser
+from APDevLedVisualiser.LEDPin import LEDPin
+from GreenLinePinFactory import GreenLinePinFactory
+import pygame 
 
-LEDVisualiser().start()
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+
+canvas = LEDVisualiser()
+canvas.setScreenSize(SCREEN_WIDTH,SCREEN_HEIGHT)
+
+factory = GreenLinePinFactory()
+pins:list[LEDPin] = factory.createAllPins(pygame.Vector2(SCREEN_WIDTH, SCREEN_HEIGHT), pygame.Vector2(50,50), 25)
+
+for pin in pins:
+    canvas.addToCanvas(pin)
+
+canvas.start()
