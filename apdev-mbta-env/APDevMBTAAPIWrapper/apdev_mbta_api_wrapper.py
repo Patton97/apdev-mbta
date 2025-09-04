@@ -43,13 +43,43 @@ class GetStopsParams(object):
 from dataclasses import dataclass
 
 @dataclass(frozen=True)
-class ImmutableStop:
-    id: str
-    name: str
+class ImmutableMBTAEntity:
+    id:str
+    name:str
+
+@dataclass(frozen=True)
+class ImmutableStation(ImmutableMBTAEntity):
+    stops:list[ImmutableStop]
+
+@dataclass(frozen=True)
+class ImmutableStop(ImmutableMBTAEntity):
+    idk = True
 
 def parseResultsJson(jsonObj:dict)->list:
     results = []
+
+    #process stations after stops
+    stationsToProcess = []
+
+    stopsKeyedByStationID:dict[str,list[ImmutableStop]] = {}
+
     for item in jsonObj["data"]:
-        # TODO: Triage/Chain of Command pattern here to handle all types elegantly
-        results.append(ImmutableStop(item["id"], item["attributes"]["description"]))
+        if item["type"] != "stop":
+            continue
+
+        stop = ImmutableStop(item["id"], item["attributes"]["description"])
+        results.append(stop)
+
+        stationStopList = stopsKeyedByStationID.get(__getParentStationID(item), None)
+        if stationStopList == None:
+            stationStopList = stopsKeyedByStationID[__getParentStationID(item)] = []
+
+        stationStopList.append(stop)
+
+    for station in jsonObj["included"]:
+        results.append(ImmutableStation(station["id"], station["attributes"]["name"], stopsKeyedByStationID[station["id"]]))
+
     return results
+
+def __getParentStationID(jsonItem):
+    return jsonItem["relationships"]["parent_station"]["data"]["id"]

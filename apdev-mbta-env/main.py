@@ -8,14 +8,15 @@ def runAPITest():
     params.sort = 'name'
     params.routeTypes = [0,1]
 
-    with requests.Session() as s:
-        response = apdev_mbta_api_wrapper.getStops(s, params)
+    #with requests.Session() as s:
+    #    response = apdev_mbta_api_wrapper.getStops(s, params)
 
-    resultsJsonObj = json.loads(response.content)
-    results = apdev_mbta_api_wrapper.parseResultsJson(resultsJsonObj)
-
+    #resultsJsonObj = json.loads(response.content)
+    with open('cachedResponse.json') as f:
+        results = apdev_mbta_api_wrapper.parseResultsJson(json.load(f))
+        
     for result in results:
-        print(result.id + " | " + result.name)
+        print(str(type(result)) +" | " +result.id + " | " + result.name)
 
 runAPITest()
 
