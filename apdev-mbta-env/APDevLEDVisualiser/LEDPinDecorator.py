@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from APDevLedVisualiser.LEDPin import LEDPin
+from APDevLEDVisualiser.LEDPin import LEDPin
 
 class LEDPinDecorator(object):
     onColour = 'black'

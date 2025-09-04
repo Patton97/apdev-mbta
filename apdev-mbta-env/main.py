@@ -1,7 +1,7 @@
 import requests
 import json
 
-import apdev_mbta_api_wrapper
+import APDevMBTAAPIWrapper.apdev_mbta_api_wrapper as apdev_mbta_api_wrapper
 
 def runAPITest():
     params = apdev_mbta_api_wrapper.GetStopsParams()
@@ -15,10 +15,13 @@ def runAPITest():
     results = apdev_mbta_api_wrapper.parseResultsJson(resultsJsonObj)
 
     for result in results:
-        print(result.name)
+        print(result.id + " | " + result.name)
 
-from APDevLedVisualiser.LEDVisualiser import LEDVisualiser
-from APDevLedVisualiser.LEDPin import LEDPin
+runAPITest()
+
+
+from APDevLEDVisualiser.LEDVisualiser import LEDVisualiser
+from APDevLEDVisualiser.LEDPin import LEDPin
 from GreenLinePinFactory import GreenLinePinFactory
 import pygame 
 
@@ -34,4 +37,4 @@ pins:list[LEDPin] = factory.createAllPins(pygame.Vector2(SCREEN_WIDTH, SCREEN_HE
 for pin in pins:
     canvas.addToCanvas(pin)
 
-canvas.start()
+#canvas.start()

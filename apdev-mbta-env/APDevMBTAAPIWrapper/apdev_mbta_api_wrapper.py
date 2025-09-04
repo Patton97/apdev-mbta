@@ -44,11 +44,12 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class ImmutableStop:
+    id: str
     name: str
 
 def parseResultsJson(jsonObj:dict)->list:
     results = []
     for item in jsonObj["data"]:
         # TODO: Triage/Chain of Command pattern here to handle all types elegantly
-        results.append(ImmutableStop(item["attributes"]["description"]))
+        results.append(ImmutableStop(item["id"], item["attributes"]["description"]))
     return results
