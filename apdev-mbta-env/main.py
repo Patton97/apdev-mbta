@@ -1,23 +1,26 @@
 import requests
-import json
 
-import APDevMBTAAPIWrapper.apdev_mbta_api_wrapper as apdev_mbta_api_wrapper
+from .apddev_mbta_api_wrapper import routes as mbta_routes, stops as mbta_stops
 
-def runAPITest():
-    params = apdev_mbta_api_wrapper.GetStopsParams()
-    params.sort = 'name'
+def runAPITest():    
+    params = mbta_routes.GetRoutesParams()
     params.routeTypes = [0,1]
 
-    #with requests.Session() as s:
-    #    response = apdev_mbta_api_wrapper.getStops(s, params)
+    with requests.Session() as s:
+        routes:list[mbta_stops.ImmutableStop] = mbta_routes.getRoutes(s, params)
 
-    #resultsJsonObj = json.loads(response.content)
-    with open('cachedResponse.json') as f:
-        results = apdev_mbta_api_wrapper.parseResultsJson(json.load(f))
+    for i in range(len(routes)):
+        params = mbta_stops.GetStopsParams()
+        params.routeFilter = routes[i].id
+
+        with requests.Session() as s:
+            stops = mbta_stops.getStops(s, params)
+
+        routes[i] = mbta_routes.ImmutableRoute(id=routes[i].id, stops=stops)
+
+    for route in routes:
+        print(route.id + " | " + ', '.join(map(lambda stop : stop.id, route.stops)))
         
-    for result in results:
-        print(str(type(result)) +" | " +result.id + " | " + result.name)
-
 runAPITest()
 
 
