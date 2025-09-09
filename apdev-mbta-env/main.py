@@ -24,8 +24,7 @@ def runAPITest():
 runAPITest()
 
 
-from APDevLEDVisualiser.LEDVisualiser import LEDVisualiser
-from APDevLEDVisualiser.LEDPin import LEDPin
+from apdev_led_visualiser import LEDVisualiser, LEDPin
 from GreenLinePinFactory import GreenLinePinFactory
 import pygame 
 
