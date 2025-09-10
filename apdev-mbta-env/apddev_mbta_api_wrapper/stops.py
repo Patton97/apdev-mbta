@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import json
 import requests
 
-import utils
+from . import utils
 
 @dataclass(frozen=True)
 class ImmutableStop(object):
@@ -18,7 +18,7 @@ def getStops(session:requests.Session, params:GetStopsParams) -> list[ImmutableS
         params = params.getDictForMBTAAPI(),
         headers = utils.getDefaultHeaders()
     )
-    responseJsonObj= json.load(response.content)
+    responseJsonObj= json.loads(response.content)
     return __parseGetStopsResponseContent(responseJsonObj)
 
 class GetStopsParams(object):

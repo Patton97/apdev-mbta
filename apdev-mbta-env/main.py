@@ -1,6 +1,6 @@
 import requests
 
-from .apddev_mbta_api_wrapper import routes as mbta_routes, stops as mbta_stops
+from apddev_mbta_api_wrapper import routes as mbta_routes, stops as mbta_stops
 
 def runAPITest():    
     params = mbta_routes.GetRoutesParams()
@@ -23,10 +23,12 @@ def runAPITest():
         
 runAPITest()
 
-
-from apdev_led_visualiser import LEDVisualiser, LEDPin
-from GreenLinePinFactory import GreenLinePinFactory
 import pygame 
+
+from apdev_led_visualiser.LEDPin import LEDPin
+from apdev_led_visualiser.LEDVisualiser import LEDVisualiser
+
+from GreenLinePinFactory import GreenLinePinFactory
 
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
@@ -40,4 +42,4 @@ pins:list[LEDPin] = factory.createAllPins(pygame.Vector2(SCREEN_WIDTH, SCREEN_HE
 for pin in pins:
     canvas.addToCanvas(pin)
 
-#canvas.start()
+canvas.start()

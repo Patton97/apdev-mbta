@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import json
 import requests
 
-import utils, stops as mbta_stops
+from . import utils, stops as mbta_stops
 
 @dataclass(frozen=True)
 class ImmutableRoute(object):
@@ -17,7 +17,7 @@ def getRoutes(session:requests.Session, params:GetRoutesParams) -> list[Immutabl
         params = params.getDictForMBTAAPI(),
         headers = utils.getDefaultHeaders()
     )
-    responseJsonObj = json.load(response.content)
+    responseJsonObj = json.loads(response.content)
     return __parseGetRoutesResponseContent(responseJsonObj)
 
 class GetRoutesParams(object):

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pygame
 
-from APDevLEDVisualiser.LEDPin import LEDPin
-from APDevLEDVisualiser.LEDPinDecorator import LEDPinDecorator
+from apdev_led_visualiser.LEDPin import LEDPin
+from apdev_led_visualiser.LEDPinDecorator import LEDPinDecorator
 
 class GreenLinePinFactory(object):
     def createAllPins(
