@@ -11,6 +11,7 @@ class ImmutableStop(object):
     id:str
     name:str
     route_id:str
+    child_stop_ids:tuple[str]
 
 def getStops(session:requests.Session, params:GetStopsParams) -> list[ImmutableStop]:
     response = session.get(
@@ -24,7 +25,7 @@ def getStops(session:requests.Session, params:GetStopsParams) -> list[ImmutableS
 class GetStopsParams(object):
     sort:str = ''
     routeFilter:str = ''
-    relationshipsToInclude:list[str] = ['route']
+    relationshipsToInclude:list[str] = ['route', 'child_stops'] # TODO decide which of these should be defaults vs injected
     def getDictForMBTAAPI(self:GetStopsParams) -> dict[str, str]:
         return {
             'sort':  self.sort,
@@ -42,7 +43,8 @@ def __parseGetStopsResponseContent(jsonObj:dict) -> list[ImmutableStop]:
         stop = ImmutableStop(
             id=item["id"],
             name=item["attributes"]["name"],
-            route_id=item['relationships']['route']['data']['id']
+            route_id=item['relationships']['route']['data']['id'],
+            child_stop_ids=tuple(map(lambda child_stop_data : child_stop_data['id'], item['relationships']['child_stops']['data']))
         )
         results.append(stop)
 

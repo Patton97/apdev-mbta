@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pygame
 
-from apdev_led_visualiser.LEDPin import LEDPin
+from apdev_led_visualiser.SoftwareLEDPin import SoftwareLEDPin
 from apdev_led_visualiser.LEDPinDecorator import LEDPinDecorator
 
 class GreenLinePinFactory(object):
@@ -10,7 +10,7 @@ class GreenLinePinFactory(object):
         self:GreenLinePinFactory,
         screenSize:pygame.Vector2,
         screenMargin:pygame.Vector2,
-        adjacentPinMargin:int) -> list[LEDPin]:
+        adjacentPinMargin:int) -> list[SoftwareLEDPin]:
         
         greenLinePinDecorator = LEDPinDecorator()
         greenLinePinDecorator.onColour = 'chartreuse'
@@ -19,7 +19,7 @@ class GreenLinePinFactory(object):
         greenLinePinDecorator.offRadius = 8
 
         stationNames = self.__getStationNames()
-        pins:list[LEDPin] = [self.__createPin(stationNames[i], greenLinePinDecorator) for i in range(len(stationNames))]
+        pins:list[SoftwareLEDPin] = [self.__createPin(stationNames[i], greenLinePinDecorator) for i in range(len(stationNames))]
 
         # riverside to fenway
         for i in range(13):
@@ -28,8 +28,8 @@ class GreenLinePinFactory(object):
             pins[i].position = pygame.Vector2(x, y)
         return pins
 
-    def __createPin(self:GreenLinePinFactory, label:str, decorator:LEDPinDecorator) -> LEDPin:
-        pin = LEDPin()
+    def __createPin(self:GreenLinePinFactory, label:str, decorator:LEDPinDecorator) -> SoftwareLEDPin:
+        pin = SoftwareLEDPin()
         pin.label = label
         decorator.decorate(pin)
         return pin

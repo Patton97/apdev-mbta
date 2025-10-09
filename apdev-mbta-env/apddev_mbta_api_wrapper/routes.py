@@ -22,7 +22,7 @@ def getRoutes(session:requests.Session, params:GetRoutesParams) -> list[Immutabl
 
 class GetRoutesParams(object):
     sort:str = ''
-    routeTypes = []
+    routeTypes:list[str] = []
     def getDictForMBTAAPI(self:GetRoutesParams) -> dict[str, str]:
         return {
             'sort':  self.sort,

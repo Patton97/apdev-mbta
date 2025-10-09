@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pygame
 
-class LEDPin(object):
+class SoftwareLEDPin(object):
     position = pygame.Vector2(0,0)
     onColour = 'black'
     offColour = 'black'
@@ -14,11 +14,11 @@ class LEDPin(object):
 
     timeUntilNextAnimationStage = 0
 
-    def configureAnimationStage0(self:LEDPin, dt:float):
+    def configureAnimationStage0(self:SoftwareLEDPin, dt:float):
         self.colour = self.offColour
         self.radius = self.offRadius
 
-    def configureAnimationStage1(self:LEDPin, dt:float):
+    def configureAnimationStage1(self:SoftwareLEDPin, dt:float):
         self.colour = self.onColour
         self.radius = self.onRadius
 
@@ -26,7 +26,7 @@ class LEDPin(object):
     animationStageLengthsInMilliseconds = [1000, 2000]
     currentAnimationStage = 0
 
-    def updateTick(self:LEDPin, dt:float):
+    def updateTick(self:SoftwareLEDPin, dt:float):
         self.timeUntilNextAnimationStage -= dt
         if self.timeUntilNextAnimationStage <= 0:
             self.currentAnimationStage += 1
@@ -36,7 +36,7 @@ class LEDPin(object):
         
         self.animationStageConfigureDelegates[self.currentAnimationStage](self, dt)
 
-    def renderTick(self:LEDPin, screen:pygame.Surface):        
+    def renderTick(self:SoftwareLEDPin, screen:pygame.Surface):        
         pygame.draw.circle(screen, self.colour, self.position, self.radius)
         text = pygame.font.Font('freesansbold.ttf', 12).render(self.label, True, 'white')
         screen.blit(text, pygame.rect.Rect(self.position.x + self.onRadius + 4, self.position.y - self.onRadius/2, 0,0))
