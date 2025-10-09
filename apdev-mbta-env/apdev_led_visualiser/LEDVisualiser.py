@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import pygame
 
-from .LEDPin import LEDPin
+from .SoftwareLEDPin import SoftwareLEDPin
 
 class LEDVisualiser(object):
-    objects:list[LEDPin] = []
+    objects:list[SoftwareLEDPin] = []
 
     __screen:pygame.Surface = None
 

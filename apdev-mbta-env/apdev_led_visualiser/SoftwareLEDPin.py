@@ -3,14 +3,16 @@ from __future__ import annotations
 import pygame
 
 class SoftwareLEDPin(object):
-    position = pygame.Vector2(0,0)
-    onColour = 'black'
+    position:str = pygame.Vector2(0,0)
+    onColour:str = 'black'
     offColour = 'black'
 
     onRadius = 0
     offRadius = 0
 
     label = 'label'
+
+    isLit:bool = False
 
     timeUntilNextAnimationStage = 0
 
@@ -26,7 +28,11 @@ class SoftwareLEDPin(object):
     animationStageLengthsInMilliseconds = [1000, 2000]
     currentAnimationStage = 0
 
-    def updateTick(self:SoftwareLEDPin, dt:float):
+    def resetAnimation(self:SoftwareLEDPin):
+        self.currentAnimationStage = 0
+        self.timeUntilNextAnimationStage = 0
+
+    def updateAnimation(self:SoftwareLEDPin, dt:float):
         self.timeUntilNextAnimationStage -= dt
         if self.timeUntilNextAnimationStage <= 0:
             self.currentAnimationStage += 1
@@ -35,6 +41,14 @@ class SoftwareLEDPin(object):
             self.timeUntilNextAnimationStage = self.animationStageLengthsInMilliseconds[self.currentAnimationStage]
         
         self.animationStageConfigureDelegates[self.currentAnimationStage](self, dt)
+
+    def updateTick(self:SoftwareLEDPin, dt:float):
+        # if not lit, ensure anim props are reset
+        if not self.isLit:
+            self.resetAnimation()
+            return
+
+        self.updateAnimation(dt)
 
     def renderTick(self:SoftwareLEDPin, screen:pygame.Surface):        
         pygame.draw.circle(screen, self.colour, self.position, self.radius)

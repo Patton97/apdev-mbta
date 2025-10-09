@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .LEDPin import LEDPin
+from .SoftwareLEDPin import SoftwareLEDPin
 
 class LEDPinDecorator(object):
     onColour = 'black'
@@ -9,7 +9,7 @@ class LEDPinDecorator(object):
     onRadius = 0
     offRadius = 0
 
-    def decorate(self:LEDPinDecorator, pinToDecorate:LEDPin):
+    def decorate(self:LEDPinDecorator, pinToDecorate:SoftwareLEDPin):
         pinToDecorate.onColour = self.onColour
         pinToDecorate.offColour = self.offColour
 
