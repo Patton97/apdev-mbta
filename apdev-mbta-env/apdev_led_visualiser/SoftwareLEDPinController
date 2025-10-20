@@ -16,4 +16,6 @@ class SoftwareLEDPinController(ILEDPinController):
         self.__controlledPin.isLit = is_lit
 
     def toggle_is_lit(self):
-        self.__controlledPin.isLit = not self.__controlledPin.isLit
+        wasLit = self.__controlledPin.isLit
+        self.__controlledPin.isLit = not wasLit
+        return not wasLit
