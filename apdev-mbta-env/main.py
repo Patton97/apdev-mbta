@@ -46,6 +46,8 @@ def runAPITest():
 import pygame 
 
 from apdev_led_visualiser.SoftwareLEDPin import SoftwareLEDPin
+from apdev_led_visualiser.SoftwareLEDPinController import SoftwareLEDPinController
+
 from apdev_led_visualiser.LEDVisualiser import LEDVisualiser
 
 from GreenLinePinFactory import GreenLinePinFactory
@@ -58,9 +60,14 @@ def runVisualiser():
     canvas.setScreenSize(SCREEN_WIDTH,SCREEN_HEIGHT)
 
     factory = GreenLinePinFactory()
-    pins:list[SoftwareLEDPin] = factory.createAllPins(pygame.Vector2(SCREEN_WIDTH, SCREEN_HEIGHT), pygame.Vector2(50,50), 25)
+    pinsKeyedByStationID:dict[str, SoftwareLEDPin] = factory.createAllPins(pygame.Vector2(SCREEN_WIDTH, SCREEN_HEIGHT), pygame.Vector2(50,50), 25)
 
-    for pin in pins:
+    controllersKeyedByStationID:dict[str,SoftwareLEDPinController] = dict[str,SoftwareLEDPinController]()
+    for key in pinsKeyedByStationID:
+        controllersKeyedByStationID[key] = SoftwareLEDPinController(pinsKeyedByStationID[key])
+        canvas.addLEDController(key, controllersKeyedByStationID[key])
+
+    for pin in pinsKeyedByStationID.values():
         canvas.addToCanvas(pin)
 
     canvas.start()

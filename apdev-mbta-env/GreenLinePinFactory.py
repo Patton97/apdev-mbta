@@ -10,7 +10,7 @@ class GreenLinePinFactory(object):
         self:GreenLinePinFactory,
         screenSize:pygame.Vector2,
         screenMargin:pygame.Vector2,
-        adjacentPinMargin:int) -> list[SoftwareLEDPin]:
+        adjacentPinMargin:int) -> dict[str, SoftwareLEDPin]:
         
         greenLinePinDecorator = LEDPinDecorator()
         greenLinePinDecorator.onColour = 'chartreuse'
@@ -19,14 +19,19 @@ class GreenLinePinFactory(object):
         greenLinePinDecorator.offRadius = 8
 
         stationNames = self.__getStationNames()
-        pins:list[SoftwareLEDPin] = [self.__createPin(stationNames[i], greenLinePinDecorator) for i in range(len(stationNames))]
+
+        # TODO: This should probably be ID
+        pinsKeyedByStationName:dict[str, SoftwareLEDPin] = dict[str,  SoftwareLEDPin]()
+        for i in range(len(stationNames)):
+            pinsKeyedByStationName[stationNames[i]] = self.__createPin(stationNames[i], greenLinePinDecorator)
 
         # riverside to fenway
         for i in range(13):
             x = screenMargin.x + i * adjacentPinMargin
             y = screenSize.y - screenMargin.y - i * adjacentPinMargin
-            pins[i].position = pygame.Vector2(x, y)
-        return pins
+            pinsKeyedByStationName[stationNames[i]].position = pygame.Vector2(x, y)
+
+        return pinsKeyedByStationName
 
     def __createPin(self:GreenLinePinFactory, label:str, decorator:LEDPinDecorator) -> SoftwareLEDPin:
         pin = SoftwareLEDPin()

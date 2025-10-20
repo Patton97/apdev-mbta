@@ -5,7 +5,7 @@ import pygame
 class SoftwareLEDPin(object):
     position:str = pygame.Vector2(0,0)
     label:str = 'label'
-    isFlashing:bool = True
+    isFlashing:bool = False
     isLit:bool = False
     
     onColour:str = 'black'
@@ -38,7 +38,7 @@ class SoftwareLEDPin(object):
 
     def __resetAnimation(self:SoftwareLEDPin):
         self.currentAnimationStage = 0
-        self.timeUntilNextAnimationStage = 0
+        self.timeUntilNextAnimationStage = self.animationStageLengthsInMilliseconds[0]
 
     def __updateAnimation(self:SoftwareLEDPin, dt:float):
         self.timeUntilNextAnimationStage -= dt
@@ -47,14 +47,13 @@ class SoftwareLEDPin(object):
             if self.currentAnimationStage >= len(self.animationStageConfigureDelegates):
                 self.currentAnimationStage = 0
             self.timeUntilNextAnimationStage = self.animationStageLengthsInMilliseconds[self.currentAnimationStage]
-        
+
         self.animationStageConfigureDelegates[self.currentAnimationStage](self, dt)
 
     def updateTick(self:SoftwareLEDPin, dt:float):
         # if not flashing, ensure anim props are reset
         if not self.isFlashing:
             self.__resetAnimation()
-            return
         
         self.__updateAnimation(dt)
 

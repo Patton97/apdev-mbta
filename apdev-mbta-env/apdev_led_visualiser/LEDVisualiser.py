@@ -3,9 +3,11 @@ from __future__ import annotations
 import pygame
 
 from .SoftwareLEDPin import SoftwareLEDPin
+from .SoftwareLEDPinController import SoftwareLEDPinController
 
 class LEDVisualiser(object):
     objects:list[SoftwareLEDPin] = []
+    controllersKeyedByID:dict[str, SoftwareLEDPinController] = dict[str, SoftwareLEDPinController]()
 
     __screen:pygame.Surface = None
 
@@ -14,6 +16,9 @@ class LEDVisualiser(object):
 
     def setScreenSize(self:LEDVisualiser, width:int, height:int):
         self.__screen = pygame.display.set_mode((width, height))
+
+    def addLEDController(self:LEDVisualiser, id:str, controllerToAdd:SoftwareLEDPinController):
+        self.controllersKeyedByID[id] = controllerToAdd
 
     def addToCanvas(self:LEDVisualiser, objectToAdd):
         self.objects.append(objectToAdd)
@@ -33,6 +38,9 @@ class LEDVisualiser(object):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+
+            keys = pygame.key.get_pressed()
+            self.controllersKeyedByID['Eliot'].set_is_lit(keys[pygame.K_e])
 
             self.__screen.fill('black')
 
