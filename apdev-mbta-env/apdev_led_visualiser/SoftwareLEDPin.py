@@ -6,6 +6,7 @@ class SoftwareLEDPin(object):
     position:str = pygame.Vector2(0,0)
     label:str = 'label'
     isFlashing:bool = True
+    isLit:bool = False
     
     onColour:str = 'black'
     offColour:str = 'black'
