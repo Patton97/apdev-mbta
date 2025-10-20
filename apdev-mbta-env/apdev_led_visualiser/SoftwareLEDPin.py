@@ -4,35 +4,42 @@ import pygame
 
 class SoftwareLEDPin(object):
     position:str = pygame.Vector2(0,0)
+    label:str = 'label'
+    isFlashing:bool = True
+    
     onColour:str = 'black'
-    offColour = 'black'
+    offColour:str = 'black'
 
-    onRadius = 0
-    offRadius = 0
+    onRadius:int = 0
+    offRadius:int = 0
 
-    label = 'label'
+    timeUntilNextAnimationStage:int = 0
 
-    isLit:bool = False
+    def __getColour(self:SoftwareLEDPin) -> str:
+        if self.isLit:
+            return self.onColour
+        return self.offColour
+    
+    def __getRadius(self:SoftwareLEDPin) -> int:
+        if self.isLit:
+            return self.onRadius
+        return self.offRadius
 
-    timeUntilNextAnimationStage = 0
+    def __configureAnimationStage0(self:SoftwareLEDPin, dt:float):
+        self.isLit = False
 
-    def configureAnimationStage0(self:SoftwareLEDPin, dt:float):
-        self.colour = self.offColour
-        self.radius = self.offRadius
+    def __configureAnimationStage1(self:SoftwareLEDPin, dt:float):
+        self.isLit = True
 
-    def configureAnimationStage1(self:SoftwareLEDPin, dt:float):
-        self.colour = self.onColour
-        self.radius = self.onRadius
-
-    animationStageConfigureDelegates = [configureAnimationStage0, configureAnimationStage1]
+    animationStageConfigureDelegates = [__configureAnimationStage0, __configureAnimationStage1]
     animationStageLengthsInMilliseconds = [1000, 2000]
     currentAnimationStage = 0
 
-    def resetAnimation(self:SoftwareLEDPin):
+    def __resetAnimation(self:SoftwareLEDPin):
         self.currentAnimationStage = 0
         self.timeUntilNextAnimationStage = 0
 
-    def updateAnimation(self:SoftwareLEDPin, dt:float):
+    def __updateAnimation(self:SoftwareLEDPin, dt:float):
         self.timeUntilNextAnimationStage -= dt
         if self.timeUntilNextAnimationStage <= 0:
             self.currentAnimationStage += 1
@@ -43,14 +50,14 @@ class SoftwareLEDPin(object):
         self.animationStageConfigureDelegates[self.currentAnimationStage](self, dt)
 
     def updateTick(self:SoftwareLEDPin, dt:float):
-        # if not lit, ensure anim props are reset
-        if not self.isLit:
-            self.resetAnimation()
+        # if not flashing, ensure anim props are reset
+        if not self.isFlashing:
+            self.__resetAnimation()
             return
+        
+        self.__updateAnimation(dt)
 
-        self.updateAnimation(dt)
-
-    def renderTick(self:SoftwareLEDPin, screen:pygame.Surface):        
-        pygame.draw.circle(screen, self.colour, self.position, self.radius)
+    def renderTick(self:SoftwareLEDPin, screen:pygame.Surface):
+        pygame.draw.circle(screen, self.__getColour(), self.position, self.__getRadius())
         text = pygame.font.Font('freesansbold.ttf', 12).render(self.label, True, 'white')
         screen.blit(text, pygame.rect.Rect(self.position.x + self.onRadius + 4, self.position.y - self.onRadius/2, 0,0))

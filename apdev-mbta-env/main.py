@@ -40,7 +40,7 @@ def runAPITest():
         else:
             print('WARNING! Vehicle is stopped at an unknown stop: ' + vehicle.stop_id)
         
-runAPITest()
+#runAPITest()
 
 
 import pygame 
@@ -64,4 +64,6 @@ def runVisualiser():
         canvas.addToCanvas(pin)
 
     canvas.start()
+
+runVisualiser()
     
