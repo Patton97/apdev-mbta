@@ -11,11 +11,24 @@ class LEDVisualiser(object):
 
     __screen:pygame.Surface = None
 
-    def __init__(self):
+    def __init__(self:LEDVisualiser):
         pygame.init()
 
-    def setScreenSize(self:LEDVisualiser, width:int, height:int):
+    def getScreenSize(self:LEDVisualiser) -> pygame.Vector2:
+        currentSize = pygame.display.get_window_size()
+        return pygame.Vector2(currentSize[0], currentSize[1])
+
+    def setScreenSize(self:LEDVisualiser, width:int, height:int, newIsFullscreen:bool):
         self.__screen = pygame.display.set_mode((width, height))
+
+        if newIsFullscreen:
+            self.__screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
+        else:
+            self.__screen = pygame.display.set_mode((width, height))
+
+    def setFullscreen(self:LEDVisualiser, newIsFullscreen:bool):
+        currentSize = pygame.display.get_window_size()
+        self.setScreenSize(currentSize[0], currentSize[1], newIsFullscreen)
 
     def addLEDController(self:LEDVisualiser, id:str, controllerToAdd:SoftwareLEDPinController):
         self.controllersKeyedByID[id] = controllerToAdd
@@ -24,9 +37,9 @@ class LEDVisualiser(object):
         self.objects.append(objectToAdd)
 
     def start(self:LEDVisualiser):
-        self.loop()
+        self.__loop()
 
-    def loop(self:LEDVisualiser):
+    def __loop(self:LEDVisualiser):
         pygame.init()
         clock = pygame.time.Clock()
         running = True
@@ -40,7 +53,7 @@ class LEDVisualiser(object):
                     running = False
 
             keys = pygame.key.get_pressed()
-            self.controllersKeyedByID['Eliot'].set_is_lit(keys[pygame.K_e])
+            self.controllersKeyedByID["place-eliot"].set_is_lit(keys[pygame.K_e])
 
             self.__screen.fill('black')
 

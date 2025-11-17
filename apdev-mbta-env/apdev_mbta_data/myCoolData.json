@@ -1,0 +1,109 @@
+{
+    "lines": [
+        {
+            "line_id": "Green-D",
+            "stops": [
+                {
+                    "stop_id": "place-river",
+                    "name": "Riverside"
+                },
+                {
+                    "stop_id": "place-woodl",
+                    "name": "Woodland"
+                },
+                {
+                    "stop_id": "place-waban",
+                    "name": "Waban"
+                },
+                {
+                    "stop_id": "place-eliot",
+                    "name": "Eliot"
+                },
+                {
+                    "stop_id": "place-newtn",
+                    "name": "Newton Highlands"
+                },
+                {
+                    "stop_id": "place-newto",
+                    "name": "Newton Centre"
+                },
+                {
+                    "stop_id": "place-chhil",
+                    "name": "Chestnut Hill"
+                },
+                {
+                    "stop_id": "place-rsmnl",
+                    "name": "Reservoir"
+                },
+                {
+                    "stop_id": "place-bcnfd",
+                    "name": "Beaconsfield"
+                },
+                {
+                    "stop_id": "place-brkhl",
+                    "name": "Brookline Hills"
+                },
+                {
+                    "stop_id": "place-bvmnl",
+                    "name": "Brookline Village"
+                },
+                {
+                    "stop_id": "place-longw",
+                    "name": "Longwood"
+                },
+                {
+                    "stop_id": "place-fenwy",
+                    "name": "Fenway"
+                },
+                {
+                    "stop_id": "place-kencl",
+                    "name": "Kenmore"
+                },
+                {
+                    "stop_id": "place-hymnl",
+                    "name": "Hynes Convention Center"
+                },
+                {
+                    "stop_id": "place-coecl",
+                    "name": "Copley"
+                },
+                {
+                    "stop_id": "place-armnl",
+                    "name": "Arlington"
+                },
+                {
+                    "stop_id": "place-boyls",
+                    "name": "Boylston"
+                },
+                {
+                    "stop_id": "place-pktrm",
+                    "name": "Park Street"
+                },
+                {
+                    "stop_id": "place-gover",
+                    "name": "Government Center"
+                },
+                {
+                    "stop_id": "place-haecl",
+                    "name": "Haymarket"
+                },
+                {
+                    "stop_id": "place-north",
+                    "name": "North Station"
+                },
+                {
+                    "stop_id": "place-spmnl",
+                    "name": "Science Park/West End"
+                },
+                {
+                    "stop_id": "place-lech",
+                    "name": "Lechmere"
+                },
+                {
+                    "stop_id": "place-unsqu",
+                    "name": "Union Square"
+                }
+            ]
+        }
+    ]
+}
