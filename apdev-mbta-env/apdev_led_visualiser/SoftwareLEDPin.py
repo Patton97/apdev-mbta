@@ -67,11 +67,11 @@ class SoftwareLEDPin(object):
         pygame.draw.circle(screen, self.__getColour(), self.__getRenderPosition(screen), self.__getRadius())
     
     def __renderLabel(self:SoftwareLEDPin, screen:pygame.Surface):
+        MARGIN:int = 4
         font = pygame.font.Font('freesansbold.ttf', 12)
         textSurface = font.render(self.label, True, 'white')
         textRect = textSurface.get_rect()        
 
-        rotAngleDeg:float = 0
         labelRenderPosition:pygame.Vector2 = self.__getRenderPosition(screen)
         rect:pygame.Rect = None
         pivot:pygame.Vector2 = pygame.Vector2(0,0)
@@ -79,91 +79,104 @@ class SoftwareLEDPin(object):
         if self.labelPlacement == LabelPlacement.NONE:
             return
 
-        self.__getLabelPlacementData(textRect, 4, self.labelPlacement)
-        data = placement_data[self.labelPlacement]
+        placementData = self.__getLabelPlacementData(textRect, MARGIN, self.labelPlacement)
 
         # Apply offset
-        labelRenderPosition += data["offset"]
+        labelRenderPosition += placementData.relative_position
 
         # Build rect using dynamic anchor
-        rect = textSurface.get_rect(**{data["anchor"]: labelRenderPosition})
+        rect = textSurface.get_rect(**{placementData.anchor_name: labelRenderPosition})
 
         # Extract pivot
-        pivot = pygame.Vector2(*getattr(rect, data["anchor"]))
-
-        # Rotation
-        rotAngleDeg = data["rotation"]
-
+        pivot = pygame.Vector2(*getattr(rect, placementData.anchor_name))
 
         dx = rect.center[0] - pivot.x
         dy = rect.center[1] - pivot.y
-        rotAngleRad = math.radians(rotAngleDeg)
+        rotAngleRad = math.radians(placementData.rotation_deg)
 
         rotatedCentre = pygame.Vector2(
             pivot.x + dx * math.cos(rotAngleRad) - dy * math.sin(rotAngleRad),
             pivot.y + dx * math.sin(rotAngleRad) + dy * math.cos(rotAngleRad)
         )
 
-        textSurface = pygame.transform.rotate(textSurface, -rotAngleDeg)
+        textSurface = pygame.transform.rotate(textSurface, -placementData.rotation_deg)
         rect = textSurface.get_rect(center=(rotatedCentre.x, rotatedCentre.y))
 
         screen.blit(textSurface, rect)
         pygame.draw.circle(screen, "pink", labelRenderPosition, 1)
 
-    # TODO: Finish refactoring this method to return ImmutableLabelPlacementData
     def __getLabelPlacementData(self:SoftwareLEDPin, textRect:pygame.Rect, margin:int, labelPlacement:LabelPlacement) -> ImmutableLabelPlacementData:
+        match labelPlacement:
+            case LabelPlacement.TOP_LEFT:
+                return ImmutableLabelPlacementData(
+                    pygame.Vector2(-self.onRadius, -self.onRadius),
+                    "midright",
+                    45
+                )
 
-        margin:int = 4
+            case LabelPlacement.TOP:
+                return ImmutableLabelPlacementData(
+                    pygame.Vector2(
+                        -textRect.width / 2,
+                        -(textRect.height / 2) - self.onRadius - margin
+                    ),
+                    "midleft",
+                    0
+                )
 
-        placementDataLookupTable = {
-            LabelPlacement.TOP_LEFT: {
-                "offset": pygame.Vector2(-self.onRadius, -self.onRadius),
-                "anchor": "midright",
-                "rotation": 45,
-            },
-            LabelPlacement.TOP: {
-                "offset": pygame.Vector2(-textRect.width / 2, -(textRect.height / 2) - self.onRadius - margin),
-                "anchor": "midleft",
-                "rotation": 0,
-            },
-            LabelPlacement.TOP_RIGHT: {
-                "offset": pygame.Vector2(self.onRadius, -self.onRadius),
-                "anchor": "midleft",
-                "rotation": -45,
-            },
-            LabelPlacement.LEFT: {
-                "offset": pygame.Vector2(-self.onRadius - margin, 0),
-                "anchor": "midright",
-                "rotation": 0,
-            },
-            LabelPlacement.CENTRE: {
-                "offset": pygame.Vector2(-textRect.width / 2, 0),
-                "anchor": "center",
-                "rotation": 0,
-            },
-            LabelPlacement.RIGHT: {
-                "offset": pygame.Vector2(self.onRadius + margin, 0),
-                "anchor": "midleft",
-                "rotation": 0,
-            },
-            LabelPlacement.BOTTOM_LEFT: {
-                "offset": pygame.Vector2(-self.onRadius, self.onRadius),
-                "anchor": "midright",
-                "rotation": -45,
-            },
-            LabelPlacement.BOTTOM: {
-                "offset": pygame.Vector2(-textRect.width / 2, (textRect.height / 2) + self.onRadius + margin),
-                "anchor": "midleft",
-                "rotation": 0,
-            },
-            LabelPlacement.BOTTOM_RIGHT: {
-                "offset": pygame.Vector2(self.onRadius, self.onRadius),
-                "anchor": "midleft",
-                "rotation": 45,
-            },
-        }
+            case LabelPlacement.TOP_RIGHT:
+                return ImmutableLabelPlacementData(
+                    pygame.Vector2(self.onRadius, -self.onRadius),
+                    "midleft",
+                    -45
+                )
 
-        return placementDataLookupTable
+            case LabelPlacement.LEFT:
+                return ImmutableLabelPlacementData(
+                    pygame.Vector2(-self.onRadius - margin, 0),
+                    "midright",
+                    0
+                )
+
+            case LabelPlacement.CENTRE:
+                return ImmutableLabelPlacementData(
+                    pygame.Vector2(-textRect.width / 2, 0),
+                    "center",
+                    0
+                )
+
+            case LabelPlacement.RIGHT:
+                return ImmutableLabelPlacementData(
+                    pygame.Vector2(self.onRadius + margin, 0),
+                    "midleft",
+                    0
+                )
+
+            case LabelPlacement.BOTTOM_LEFT:
+                return ImmutableLabelPlacementData(
+                    pygame.Vector2(-self.onRadius, self.onRadius),
+                    "midright",
+                    -45
+                )
+
+            case LabelPlacement.BOTTOM:
+                return ImmutableLabelPlacementData(
+                    pygame.Vector2(
+                        -textRect.width / 2,
+                        (textRect.height / 2) + self.onRadius + margin
+                    ),
+                    "midleft",
+                    0
+                )
+
+            case LabelPlacement.BOTTOM_RIGHT:
+                return ImmutableLabelPlacementData(
+                    pygame.Vector2(self.onRadius, self.onRadius),
+                    "midleft",
+                    45
+                )
+            
+        return None
 
     def __configureAnimationStage0(self:SoftwareLEDPin, dt:float):
         self.isLit = False
