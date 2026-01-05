@@ -1,0 +1,41 @@
+import requests
+
+from apddev_mbta_api_wrapper import routes as mbta_routes, stops as mbta_stops, vehicles as mbta_vehicles
+
+def runAPITest():
+    getRoutesParams = mbta_routes.GetRoutesParams()
+    getRoutesParams.routeTypes = [0, 1]
+
+    with requests.Session() as s:
+        routes:list[mbta_stops.ImmutableStop] = mbta_routes.getRoutes(s, getRoutesParams)
+
+    for i in range(len(routes)):
+        params = mbta_stops.GetStopsParams()
+        params.routeFilter = routes[i].id
+
+        with requests.Session() as s:
+            stops = mbta_stops.getStops(s, params)
+
+        routes[i] = mbta_routes.ImmutableRoute(id=routes[i].id, stops=stops)
+    
+    params = mbta_vehicles.GetVehiclesParams()
+    params.routeTypes = [0,1]
+
+    with requests.Session() as s:
+        vehicles:list[mbta_vehicles.ImmutableVehicle] = mbta_vehicles.getVehicles(s, params)
+
+    stopsKeyedByID:dict[str,mbta_stops.ImmutableStop] = {}
+    for stop in stops:
+        stopsKeyedByID[stop.id] = stop
+        for child_stop_id in stop.child_stop_ids:
+            stopsKeyedByID[child_stop_id] = stop
+            print(stop.name + ' | ' + child_stop_id)
+
+    for vehicle in vehicles:
+        #if vehicle.vehicle_stop_status != mbta_vehicles.VehicleStopStatus.STOPPED_AT:
+            #continue
+        # TODO: The vehicles are stopped at stops, but I'm just storing stations.
+        if vehicle.stop_id in stopsKeyedByID:
+            print('[' + vehicle.id + '] is ' + str(vehicle.vehicle_stop_status) + ' @ ' + stopsKeyedByID[vehicle.stop_id].name + ' on ' + vehicle.route_id)
+        else:
+            print('WARNING! Vehicle is stopped at an unknown stop: ' + vehicle.stop_id)

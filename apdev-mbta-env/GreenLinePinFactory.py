@@ -5,12 +5,14 @@ import pygame
 from apdev_led_visualiser.SoftwareLEDPin import SoftwareLEDPin
 from apdev_led_visualiser.LEDPinDecorator import LEDPinDecorator
 
+from apdev_mbta_data.ImmutableStopMetadata import ImmutableStopMetadata
+
 class GreenLinePinFactory(object):
     def createAllPins(
         self:GreenLinePinFactory,
-        screenSize:pygame.Vector2,
+        stop_metadata_list:list[ImmutableStopMetadata],
         screenMargin:pygame.Vector2,
-        adjacentPinMargin:int) -> dict[str, SoftwareLEDPin]:
+        pinGridScale:int) -> dict[str, SoftwareLEDPin]:
         
         greenLinePinDecorator = LEDPinDecorator()
         greenLinePinDecorator.onColour = 'chartreuse'
@@ -18,51 +20,32 @@ class GreenLinePinFactory(object):
         greenLinePinDecorator.onRadius = 10
         greenLinePinDecorator.offRadius = 8
 
-        stationNames = self.__getStationNames()
+        pinsKeyedByStationID:dict[str, SoftwareLEDPin] = dict[str,  SoftwareLEDPin]()
+        for stop_metadata in stop_metadata_list:
+            pinsKeyedByStationID[stop_metadata.id] = self.__createPin(
+                stop_metadata,
+                greenLinePinDecorator,
+                screenMargin,
+                pinGridScale
+            )
 
-        # TODO: This should probably be ID
-        pinsKeyedByStationName:dict[str, SoftwareLEDPin] = dict[str,  SoftwareLEDPin]()
-        for i in range(len(stationNames)):
-            pinsKeyedByStationName[stationNames[i]] = self.__createPin(stationNames[i], greenLinePinDecorator)
+        return pinsKeyedByStationID
 
-        # riverside to fenway
-        for i in range(13):
-            x = screenMargin.x + i * adjacentPinMargin
-            y = screenSize.y - screenMargin.y - i * adjacentPinMargin
-            pinsKeyedByStationName[stationNames[i]].position = pygame.Vector2(x, y)
+    def __createPin(self:GreenLinePinFactory,
+        stop_metadata:ImmutableStopMetadata,
+        decorator:LEDPinDecorator,
+        screenMargin:pygame.Vector2,
+        pinGridScale:int) -> SoftwareLEDPin:
 
-        return pinsKeyedByStationName
-
-    def __createPin(self:GreenLinePinFactory, label:str, decorator:LEDPinDecorator) -> SoftwareLEDPin:
         pin = SoftwareLEDPin()
-        pin.label = label
+        pin.label = stop_metadata.name
+        pin.gridPosition = pygame.Vector2(
+            stop_metadata.standardised_location_x,
+            stop_metadata.standardised_location_y
+        )
+        pin.gridScale = pinGridScale
+        pin.screenMargin = screenMargin
+        pin.labelPlacement = stop_metadata.label_placement
+        pin.isFlashing = True
         decorator.decorate(pin)
         return pin
-
-    def __getStationNames(self:GreenLinePinFactory):
-        return [
-            "Riverside",
-            "Woodland",
-            "Waban",
-            "Eliot",
-            "Newton Highlands",
-            "Newton Centre",
-            "Chestnut Hill",
-            "Reservoir",
-            "Beaconsfield",
-            "Brookline Hills",
-            "Brookline Village",
-            "Longwood",
-            "Fenway",
-            "Kenmore",
-            "Hynes Convention Centre",
-            "Copley",
-            "Arlington",
-            "Boylston",
-            "Park Street",
-            "Government Centre",
-            "North Station",
-            "Science Park/West End",
-            "Lechmere",
-            "Union Square"
-        ]

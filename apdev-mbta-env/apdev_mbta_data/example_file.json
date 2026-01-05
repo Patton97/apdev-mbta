@@ -1,0 +1,186 @@
+{
+    "lines": 
+    [
+        {
+            "line_id": "Green-D",
+            "stops": 
+            [
+                {
+                    "stop_id": "place-river",
+                    "name": "Riverside",
+                    "standardised_location_x" : 4,
+                    "standardised_location_y" : 1,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-woodl",
+                    "name": "Woodland",
+                    "standardised_location_x" : 5,
+                    "standardised_location_y" : 2,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-waban",
+                    "name": "Waban",
+                    "standardised_location_x" : 6,
+                    "standardised_location_y" : 3,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-eliot",
+                    "name": "Eliot",
+                    "standardised_location_x" : 7,
+                    "standardised_location_y" : 4,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-newtn",
+                    "name": "Newton Highlands",
+                    "standardised_location_x" : 8,
+                    "standardised_location_y" : 5,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-newto",
+                    "name": "Newton Centre",
+                    "standardised_location_x" : 9,
+                    "standardised_location_y" : 6,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-chhil",
+                    "name": "Chestnut Hill",
+                    "standardised_location_x" : 10,
+                    "standardised_location_y" : 7,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-rsmnl",
+                    "name": "Reservoir",
+                    "standardised_location_x" : 11,
+                    "standardised_location_y" : 8,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-bcnfd",
+                    "name": "Beaconsfield",
+                    "standardised_location_x" : 12,
+                    "standardised_location_y" : 9,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-brkhl",
+                    "name": "Brookline Hills",
+                    "standardised_location_x" : 13,
+                    "standardised_location_y" : 10,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-bvmnl",
+                    "name": "Brookline Village",
+                    "standardised_location_x" : 14,
+                    "standardised_location_y" : 11,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-longw",
+                    "name": "Longwood",
+                    "standardised_location_x" : 15,
+                    "standardised_location_y" : 12,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-fenwy",
+                    "name": "Fenway",
+                    "standardised_location_x" : 16,
+                    "standardised_location_y" : 13,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-kencl",
+                    "name": "Kenmore",
+                    "standardised_location_x" : 19,
+                    "standardised_location_y" : 15,
+                    "label_placement" : "TOP"
+                },
+                {
+                    "stop_id": "place-hymnl",
+                    "name": "Hynes Convention Center",
+                    "standardised_location_x" : 22,
+                    "standardised_location_y" : 15,
+                    "label_placement" : "TOP_RIGHT"
+                },
+                {
+                    "stop_id": "place-coecl",
+                    "name": "Copley",
+                    "standardised_location_x" : 25,
+                    "standardised_location_y" : 15,
+                    "label_placement" : "TOP_RIGHT"
+                },
+                {
+                    "stop_id": "place-armnl",
+                    "name": "Arlington",
+                    "standardised_location_x" : 28,
+                    "standardised_location_y" : 15,
+                    "label_placement" : "BOTTOM_LEFT"
+                },
+                {
+                    "stop_id": "place-boyls",
+                    "name": "Boylston",
+                    "standardised_location_x" : 31,
+                    "standardised_location_y" : 16,
+                    "label_placement" : "BOTTOM_LEFT"
+                },
+                {
+                    "stop_id": "place-pktrm",
+                    "name": "Park Street",
+                    "standardised_location_x" : 34,
+                    "standardised_location_y" : 19,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-gover",
+                    "name": "Government Center",
+                    "standardised_location_x" : 37,
+                    "standardised_location_y" : 22,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-haecl",
+                    "name": "Haymarket",
+                    "standardised_location_x" : 40,
+                    "standardised_location_y" : 26,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-north",
+                    "name": "North Station",
+                    "standardised_location_x" : 40,
+                    "standardised_location_y" : 28,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-spmnl",
+                    "name": "Science Park/West End",
+                    "standardised_location_x" : 39,
+                    "standardised_location_y" : 30,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-lech",
+                    "name": "Lechmere",
+                    "standardised_location_x" : 37,
+                    "standardised_location_y" : 32,
+                    "label_placement" : "LEFT"
+                },
+                {
+                    "stop_id": "place-unsqu",
+                    "name": "Union Square",
+                    "standardised_location_x" : 31,
+                    "standardised_location_y" : 34,
+                    "label_placement" : "LEFT"
+                }
+            ]
+        }
+    ]
+}
