@@ -103,7 +103,6 @@ class SoftwareLEDPin(object):
         rect = textSurface.get_rect(center=(rotatedCentre.x, rotatedCentre.y))
 
         screen.blit(textSurface, rect)
-        pygame.draw.circle(screen, "pink", labelRenderPosition, 1)
 
     def __getLabelPlacementData(self:SoftwareLEDPin, textRect:pygame.Rect, margin:int, labelPlacement:LabelPlacement) -> ImmutableLabelPlacementData:
         match labelPlacement:
