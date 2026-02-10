@@ -1,8 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
 
-from enum import Enum
-
 from apdev_mbta_data.LabelPlacement import LabelPlacement
 
 @dataclass(frozen=True)

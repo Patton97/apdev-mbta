@@ -1,11 +1,11 @@
 from __future__ import annotations
-from dataclasses import dataclass
 
 import json
 
 from apdev_mbta_data.ImmutableLineMetadata import ImmutableLineMetadata
 from apdev_mbta_data.ImmutableStopMetadata import ImmutableStopMetadata
 from apdev_mbta_data.LabelPlacement import LabelPlacement
+from apdev_mbta_data.ImmutableVector2 import ImmutableVector2
 
 class APDevMBTADataReader(object):
     def read_from_file(self:APDevMBTADataReader, file_path:str) -> list[ImmutableLineMetadata]:
@@ -22,12 +22,19 @@ class APDevMBTADataReader(object):
     
     def __parse_line_metadata(self:APDevMBTADataReader, line_json_obj:dict) -> ImmutableLineMetadata:
         line_id:str = line_json_obj["line_id"]
-        stops:list[ImmutableStopMetadata] = []
 
+        primary_colour = line_json_obj["primary_colour"]
+        secondary_colour = line_json_obj["secondary_colour"]
+
+        stops:list[ImmutableStopMetadata] = []
         for stop_json_obj in line_json_obj["stops"]:
             stops.append(self.__parse_stop_metadata(stop_json_obj))
 
-        return ImmutableLineMetadata(line_json_obj["line_id"], stops)
+        line_anchors:list[ImmutableVector2] = []
+        for line_anchor in  line_json_obj["line_anchors"]:
+            line_anchors.append(ImmutableVector2(line_anchor["x"], line_anchor["y"]))
+
+        return ImmutableLineMetadata(line_id, primary_colour, secondary_colour, stops, line_anchors)
     
     def __parse_stop_metadata(self:APDevMBTADataReader, stop_json_obj:dict) -> ImmutableStopMetadata:
         label_placement = LabelPlacement.__dict__.get(stop_json_obj.get("label_placement"))

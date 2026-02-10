@@ -2,38 +2,30 @@ from __future__ import annotations
 
 import pygame
 
-from apdev_led_visualiser.SoftwareLEDPin import SoftwareLEDPin
-from apdev_led_visualiser.LEDPinDecorator import LEDPinDecorator
-
 from apdev_mbta_data.ImmutableStopMetadata import ImmutableStopMetadata
 
-class GreenLinePinFactory(object):
+from apdev_led_visualiser.SoftwareLEDPin import SoftwareLEDPin
+
+class SoftwareLEDPinFactory(object):
+
     def createAllPins(
-        self:GreenLinePinFactory,
+        self:SoftwareLEDPinFactory,
         stop_metadata_list:list[ImmutableStopMetadata],
         screenMargin:pygame.Vector2,
         pinGridScale:int) -> dict[str, SoftwareLEDPin]:
-        
-        greenLinePinDecorator = LEDPinDecorator()
-        greenLinePinDecorator.onColour = 'chartreuse'
-        greenLinePinDecorator.offColour = 'chartreuse4'
-        greenLinePinDecorator.onRadius = 10
-        greenLinePinDecorator.offRadius = 8
 
         pinsKeyedByStationID:dict[str, SoftwareLEDPin] = dict[str,  SoftwareLEDPin]()
         for stop_metadata in stop_metadata_list:
             pinsKeyedByStationID[stop_metadata.id] = self.__createPin(
                 stop_metadata,
-                greenLinePinDecorator,
                 screenMargin,
                 pinGridScale
             )
 
         return pinsKeyedByStationID
 
-    def __createPin(self:GreenLinePinFactory,
+    def __createPin(self:SoftwareLEDPinFactory,
         stop_metadata:ImmutableStopMetadata,
-        decorator:LEDPinDecorator,
         screenMargin:pygame.Vector2,
         pinGridScale:int) -> SoftwareLEDPin:
 
@@ -47,5 +39,5 @@ class GreenLinePinFactory(object):
         pin.screenMargin = screenMargin
         pin.labelPlacement = stop_metadata.label_placement
         pin.isFlashing = True
-        decorator.decorate(pin)
+
         return pin
