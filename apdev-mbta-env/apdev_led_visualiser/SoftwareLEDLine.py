@@ -13,8 +13,6 @@ class SoftwareLEDLine(object):
 
     colour:str = 'black'
 
-    timeUntilNextAnimationStage:int = 0
-
     def updateTick(self:SoftwareLEDLine, dt:int):
         pass
 
@@ -42,7 +40,7 @@ class SoftwareLEDLine(object):
             screenSize.y - self.gridEndPosition.y * self.gridScale
         )
     
-    def __render(self:SoftwareLEDLine, screen:pygame.Surface):
+    def __renderLine(self:SoftwareLEDLine, screen:pygame.Surface):
         pygame.draw.line(
             screen,
             self.__getColour(),
@@ -50,3 +48,16 @@ class SoftwareLEDLine(object):
             self.__getEndRenderPosition(screen),
             self.width
         )
+
+    def __renderJointCircle(self:SoftwareLEDLine, screen:pygame.Surface, renderPosition:pygame.Vector2):
+        pygame.draw.circle(
+            screen,
+            self.__getColour(),
+            renderPosition,
+            self.width / 3
+        )
+    
+    def __render(self:SoftwareLEDLine, screen:pygame.Surface):
+        self.__renderLine(screen)
+        self.__renderJointCircle(screen, self.__getStartRenderPosition(screen))
+        self.__renderJointCircle(screen, self.__getEndRenderPosition(screen))

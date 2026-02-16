@@ -4,6 +4,7 @@ from apdev_led_visualiser.LEDVisualiser import LEDVisualiser
 from apdev_led_visualiser.SoftwareLEDPinFactory import SoftwareLEDPinFactory
 from apdev_led_visualiser.SoftwareLEDLineFactory import SoftwareLEDLineFactory
 from apdev_led_visualiser.SoftwareLEDPinDecorator import SoftwareLEDPinDecorator, ImmutableSoftwareLEDPinDecoratorConfig
+from apdev_led_visualiser.SoftwareLEDLineDecorator import SoftwareLEDLineDecorator, ImmutableSoftwareLEDLineDecoratorConfig
 from apdev_led_visualiser.SoftwareLEDPin import SoftwareLEDPin
 from apdev_led_visualiser.SoftwareLEDPinController import SoftwareLEDPinController
 from apdev_led_visualiser.SoftwareLEDLine import SoftwareLEDLine
@@ -36,16 +37,15 @@ def __addSceneObjectsForLine(lineMetadata:ImmutableLineMetadata, canvas:LEDVisua
     __addPinsForStops(lineMetadata,canvas)
 
 def __addSplinesForLine(lineMetadata:ImmutableLineMetadata, canvas:LEDVisualiser):
-    lineAnchorCount = len(lineMetadata.line_anchors)
-    for i in range(lineAnchorCount):
-        if (i+1 >= lineAnchorCount):
-            break
-        ledLine = SoftwareLEDLine()
-        ledLine.gridStartPosition = lineMetadata.line_anchors[i]
-        ledLine.gridEndPosition = lineMetadata.line_anchors[i+1]
-        ledLine.gridScale = GRID_SCALE
-        ledLine.colour = lineMetadata.secondary_colour
-        canvas.addToCanvas(ledLine)
+    factory = SoftwareLEDLineFactory()
+    lines:list[SoftwareLEDLine] = factory.createAllLines(lineMetadata.line_anchors, GRID_SCALE)
+    
+    decoratorConfig = ImmutableSoftwareLEDLineDecoratorConfig(lineMetadata.secondary_colour)
+    decorator = SoftwareLEDLineDecorator(decoratorConfig)
+    decorator.decorateAll(lines)
+
+    for line in lines:
+        canvas.addToCanvas(line)
 
 def __addPinsForStops(lineMetadata:ImmutableLineMetadata, canvas:LEDVisualiser):
     pinFactory = SoftwareLEDPinFactory()
