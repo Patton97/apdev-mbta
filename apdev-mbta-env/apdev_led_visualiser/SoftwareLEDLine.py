@@ -4,7 +4,9 @@ from typing import Tuple
 
 import pygame
 
-class SoftwareLEDLine(object):
+from .SceneObject import SceneObject
+
+class SoftwareLEDLine(SceneObject):
     gridStartPosition:pygame.Vector2 = pygame.Vector2(0,0)
     gridEndPosition:pygame.Vector2 = pygame.Vector2(0,0)
     gridScale:int = 1

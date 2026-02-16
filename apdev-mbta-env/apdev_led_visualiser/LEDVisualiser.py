@@ -52,9 +52,6 @@ class LEDVisualiser(object):
                 if event.type == pygame.QUIT:
                     running = False
 
-            keys = pygame.key.get_pressed()
-            self.controllersKeyedByID["place-eliot"].set_is_lit(keys[pygame.K_e])
-
             self.__screen.fill('black')
 
             for object in self.objects:

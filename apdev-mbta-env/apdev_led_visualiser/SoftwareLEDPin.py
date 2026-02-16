@@ -7,6 +7,7 @@ from typing import Tuple
 import pygame
 
 from apdev_mbta_data.LabelPlacement import LabelPlacement
+from .SceneObject import SceneObject
 
 @dataclass(frozen=True)
 class ImmutableLabelPlacementData(object):
@@ -14,7 +15,7 @@ class ImmutableLabelPlacementData(object):
     anchor_name:str
     rotation_deg:float
 
-class SoftwareLEDPin(object):
+class SoftwareLEDPin(SceneObject):
     gridPosition:pygame.Vector2 = pygame.Vector2(0,0)
     gridScale:int = 1
     screenMargin:pygame.Vector2 = pygame.Vector2(0,0)
@@ -34,6 +35,8 @@ class SoftwareLEDPin(object):
     timeUntilNextAnimationStage:int = 0
 
     def updateTick(self:SoftwareLEDPin, dt:float):
+        super().updateTick(dt)
+
         # if not flashing, ensure anim props are reset
         if not self.isFlashing:
             self.__resetAnimation()
