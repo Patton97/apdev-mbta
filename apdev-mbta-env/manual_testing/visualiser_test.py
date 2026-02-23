@@ -8,6 +8,7 @@ from apdev_led_visualiser.SoftwareLEDLineDecorator import SoftwareLEDLineDecorat
 from apdev_led_visualiser.SoftwareLEDPin import SoftwareLEDPin
 from apdev_led_visualiser.SoftwareLEDPinController import SoftwareLEDPinController
 from apdev_led_visualiser.SoftwareLEDLine import SoftwareLEDLine
+from apdev_led_visualiser.SoftwareLEDPinAnimationComponentFactory import SoftwareLEDPinAnimationComponentFactory
 
 from apdev_mbta_data.ImmutableLineMetadata import ImmutableLineMetadata
 from apdev_mbta_data.APDevMBTADataReader import APDevMBTADataReader
@@ -58,7 +59,10 @@ def __addPinsForStops(lineMetadata:ImmutableLineMetadata, canvas:LEDVisualiser):
         lineMetadata.primary_colour,
         'black',
         LED_PIN_ON_RADIUS,
-        LED_PIN_OFF_RADIUS
+        LED_PIN_OFF_RADIUS,
+        SoftwareLEDPinAnimationComponentFactory(),
+        1000,
+        2000
     )
 
     pinDecorator = SoftwareLEDPinDecorator(pinDecoratorConfig)

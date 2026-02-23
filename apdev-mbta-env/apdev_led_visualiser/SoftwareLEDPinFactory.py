@@ -39,6 +39,6 @@ class SoftwareLEDPinFactory(object):
         pin.setOffRadius(8)
         pin.setOnColour(stop_metadata.primary_colour)
         pin.setOffColour(stop_metadata.secondary_colour)
-        pin.startFlashing()
+        pin.setIsFlashing(True)
 
         return pin

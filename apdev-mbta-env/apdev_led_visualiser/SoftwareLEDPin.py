@@ -35,13 +35,8 @@ class SoftwareLEDPin(SceneObject):
 
         self.__labelPlacement:LabelPlacement = LabelPlacement.NONE
         
-        self.__isLit:bool = True
-
-        animationComponent = AnimationComponent([
-            ImmutableAnimationStage(self.__configureAnimationStage0, None, 1000),
-            ImmutableAnimationStage(self.__configureAnimationStage1, None, 2000),
-        ])
-        self.addComponent(animationComponent)
+        self.__isLit:bool = False
+        self.__isFlashing:bool = False
 
     def renderTick(self:SoftwareLEDPin, screen:pygame.Surface):
         self.__renderPin(screen)        
@@ -71,11 +66,14 @@ class SoftwareLEDPin(SceneObject):
     def setLabelPlacement(self:SoftwareLEDPin, labelPlacement:LabelPlacement):
         self.__labelPlacement = labelPlacement
 
-    def startFlashing(self:SoftwareLEDPin):
-        self.__isFlashing = True
-
-    def startFlashing(self:SoftwareLEDPin):
-        self.__isFlashing = False
+    def setIsFlashing(self:SoftwareLEDPin, isFlashing:bool):
+        self.__isFlashing = isFlashing
+    
+    def getIsFlashing(self:SoftwareLEDPin) -> bool:
+        return self.__isFlashing
+    
+    def _setIsLit(self:SoftwareLEDPin, isLit:bool):
+        self.__isLit = isLit
 
     def __getColour(self:SoftwareLEDPin) -> str:
         if self.__isLit:
@@ -88,12 +86,9 @@ class SoftwareLEDPin(SceneObject):
         return self.__offRadius
     
     def __getRenderPosition(self:SoftwareLEDPin, screen:pygame.Surface) -> pygame.Vector2:
-        screenSize:Tuple[int,int] = screen.get_size()
-        screenSize:pygame.Vector2 = pygame.Vector2(screenSize[0], screenSize[1])
-
         return pygame.Vector2(
             self.__gridPosition.x * self.__gridScale,
-            screenSize.y - self.__gridPosition.y * self.__gridScale
+            screen.get_size()[1] - self.__gridPosition.y * self.__gridScale
         )
     
     def __renderPin(self:SoftwareLEDPin, screen:pygame.Surface):
@@ -209,9 +204,3 @@ class SoftwareLEDPin(SceneObject):
                 )
             
         return None
-
-    def __configureAnimationStage0(self:SoftwareLEDPin):
-        self.__isLit = False
-
-    def __configureAnimationStage1(self:SoftwareLEDPin):
-        self.__isLit = True

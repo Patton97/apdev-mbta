@@ -3,12 +3,17 @@ from dataclasses import dataclass
 
 from .SoftwareLEDPin import SoftwareLEDPin
 
+from apdev_led_visualiser.SoftwareLEDPinAnimationComponentFactory import SoftwareLEDPinAnimationComponentFactory
+
 @dataclass(frozen=True)
 class ImmutableSoftwareLEDPinDecoratorConfig(object):
     onColour:str = None
     offColour:str = None
     onRadius:int = 0
     offRadius:int = 0
+    animComponentFactory:SoftwareLEDPinAnimationComponentFactory = None
+    offLengthInMilliseconds:int = 0
+    onLengthInMilliseconds:int = 0
 
 class SoftwareLEDPinDecorator(object):
     __config:ImmutableSoftwareLEDPinDecoratorConfig
@@ -17,11 +22,18 @@ class SoftwareLEDPinDecorator(object):
         self.__config = config
 
     def decorate(self:SoftwareLEDPinDecorator, pinToDecorate:SoftwareLEDPin):
-        pinToDecorate.onColour = self.__config.onColour
-        pinToDecorate.offColour = self.__config.offColour
+        pinToDecorate.setOnColour(self.__config.onColour)
+        pinToDecorate.setOffColour(self.__config.offColour)
 
-        pinToDecorate.onRadius = self.__config.onRadius
-        pinToDecorate.offRadius = self.__config.offRadius
+        pinToDecorate.setOnRadius(self.__config.onRadius)
+        pinToDecorate.setOffRadius(self.__config.offRadius)
+        if self.__config.animComponentFactory is not None:
+            animComponent = self.__config.animComponentFactory.createFlashingAnimationComponent(
+                pinToDecorate,
+                self.__config.offLengthInMilliseconds,
+                self.__config.onLengthInMilliseconds
+            )
+            pinToDecorate.addComponent(animComponent)
 
     def decorateAll(self:SoftwareLEDPinDecorator, pinsToDecorate:list[SoftwareLEDPin]):
         for pinToDecorate in pinsToDecorate:

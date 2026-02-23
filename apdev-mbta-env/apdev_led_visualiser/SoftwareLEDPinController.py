@@ -9,12 +9,13 @@ class SoftwareLEDPinController(ILEDPinController):
         self.__controlledPin = pinToControl
     
     def get_is_lit(self:SoftwareLEDPinController) -> bool:
-        return self.__controlledPin.isFlashing
+        return self.__controlledPin.getIsFlashing()
     
     def set_is_lit(self, is_lit):
-        self.__controlledPin.isFlashing = is_lit
+        self.__controlledPin.setIsFlashing(is_lit)
 
     def toggle_is_lit(self):
-        wasLit = self.__controlledPin.isFlashing
-        self.__controlledPin.isFlashing = not wasLit
-        return not wasLit
+        wasLit = self.__controlledPin.getIsFlashing()
+        newIsList = not wasLit
+        self.__controlledPin.setIsFlashing(newIsList)
+        return newIsList
