@@ -51,7 +51,6 @@ def __addPinsForStops(lineMetadata:ImmutableLineMetadata, canvas:LEDVisualiser):
     pinFactory = SoftwareLEDPinFactory()
     pinsKeyedByStationID:dict[str, SoftwareLEDPin] = pinFactory.createAllPins(
         lineMetadata.stops,
-        SCREEN_MARGIN,
         GRID_SCALE
     )
 

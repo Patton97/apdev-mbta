@@ -40,7 +40,6 @@ class LEDVisualiser(object):
         self.__loop()
 
     def __loop(self:LEDVisualiser):
-        pygame.init()
         clock = pygame.time.Clock()
         running = True
 

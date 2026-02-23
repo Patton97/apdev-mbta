@@ -28,7 +28,7 @@ class APDevMBTADataReader(object):
 
         stops:list[ImmutableStopMetadata] = []
         for stop_json_obj in line_json_obj["stops"]:
-            stops.append(self.__parse_stop_metadata(stop_json_obj))
+            stops.append(self.__parse_stop_metadata(stop_json_obj, line_json_obj))
 
         line_anchors:list[ImmutableVector2] = []
         for line_anchor in  line_json_obj["line_anchors"]:
@@ -36,7 +36,7 @@ class APDevMBTADataReader(object):
 
         return ImmutableLineMetadata(line_id, primary_colour, secondary_colour, stops, line_anchors)
     
-    def __parse_stop_metadata(self:APDevMBTADataReader, stop_json_obj:dict) -> ImmutableStopMetadata:
+    def __parse_stop_metadata(self:APDevMBTADataReader, stop_json_obj:dict, line_json_obj:dict) -> ImmutableStopMetadata:
         label_placement = LabelPlacement.__dict__.get(stop_json_obj.get("label_placement"))
         if label_placement is None:
             label_placement = LabelPlacement.CENTRE
@@ -46,5 +46,7 @@ class APDevMBTADataReader(object):
             stop_json_obj["name"],
             stop_json_obj["standardised_location_x"],
             stop_json_obj["standardised_location_y"],
-            label_placement
+            label_placement,
+            line_json_obj["primary_colour"],
+            line_json_obj["secondary_colour"]
         )
