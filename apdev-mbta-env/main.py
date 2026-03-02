@@ -2,4 +2,4 @@ from manual_testing.api_test import runAPITest
 from manual_testing.visualiser_test import runVisualiserTest
 from manual_testing.data_reader_test import runDataReaderTest, runDataWriterTest
 
-runAPITest()
+runVisualiserTest()
