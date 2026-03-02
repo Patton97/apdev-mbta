@@ -6,13 +6,12 @@ from .SoftwareLEDPin import SoftwareLEDPin
 from .SoftwareLEDPinController import SoftwareLEDPinController
 
 class LEDVisualiser(object):
-    objects:list[SoftwareLEDPin] = []
-    controllersKeyedByID:dict[str, SoftwareLEDPinController] = dict[str, SoftwareLEDPinController]()
-
-    __screen:pygame.Surface = None
 
     def __init__(self:LEDVisualiser):
         pygame.init()
+        self.__objects:list[SoftwareLEDPin] = []
+        self.__controllersKeyedById:dict[str, SoftwareLEDPinController] = dict[str, SoftwareLEDPinController]()
+        self.__screen:pygame.Surface = None
 
     def getScreenSize(self:LEDVisualiser) -> pygame.Vector2:
         currentSize = pygame.display.get_window_size()
@@ -31,10 +30,10 @@ class LEDVisualiser(object):
         self.setScreenSize(currentSize[0], currentSize[1], newIsFullscreen)
 
     def addLEDController(self:LEDVisualiser, id:str, controllerToAdd:SoftwareLEDPinController):
-        self.controllersKeyedByID[id] = controllerToAdd
+        self.__controllersKeyedById[id] = controllerToAdd
 
     def addToCanvas(self:LEDVisualiser, objectToAdd):
-        self.objects.append(objectToAdd)
+        self.__objects.append(objectToAdd)
 
     def start(self:LEDVisualiser):
         self.__loop()
@@ -53,7 +52,7 @@ class LEDVisualiser(object):
 
             self.__screen.fill('black')
 
-            for object in self.objects:
+            for object in self.__objects:
                 object.updateTick(deltaTime)
                 object.renderTick(self.__screen)
 

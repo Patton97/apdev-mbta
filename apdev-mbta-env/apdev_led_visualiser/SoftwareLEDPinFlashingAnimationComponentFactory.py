@@ -14,7 +14,6 @@ class SoftwareLEDPinFlashingAnimationComponentFactory(object):
         self.__onLengthInMilliseconds = onLengthInMilliseconds
 
     def create(self:SoftwareLEDPinFlashingAnimationComponentFactory, pin:SoftwareLEDPin):
-
         stage0 = lambda: pin._setIsLit(False)
         stage1 = lambda: pin._setIsLit(True)
         return AnimationComponent([

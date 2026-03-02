@@ -14,7 +14,7 @@ class SoftwareLEDLineFactory(object):
                 break
             ledLine = SoftwareLEDLine()
             lines.append(ledLine)
-            ledLine.gridStartPosition = line_anchors[i]
-            ledLine.gridEndPosition = line_anchors[i+1]
-            ledLine.gridScale = grid_scale
+            ledLine.setGridStartPosition(line_anchors[i])
+            ledLine.setGridEndPosition(line_anchors[i+1])
+            ledLine.setGridScale(grid_scale)
         return lines

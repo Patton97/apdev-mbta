@@ -4,9 +4,9 @@ from ILEDPinController import ILEDPinController
 from .SoftwareLEDPin import SoftwareLEDPin
 
 class SoftwareLEDPinController(ILEDPinController):
-    __controlledPin:SoftwareLEDPin
+
     def __init__(self:SoftwareLEDPinController, pinToControl:SoftwareLEDPin):
-        self.__controlledPin = pinToControl
+        self.__controlledPin:SoftwareLEDPin = pinToControl
     
     def get_is_lit(self:SoftwareLEDPinController) -> bool:
         return self.__controlledPin.getIsFlashing()

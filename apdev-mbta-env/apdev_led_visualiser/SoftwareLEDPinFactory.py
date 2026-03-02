@@ -33,10 +33,6 @@ class SoftwareLEDPinFactory(object):
             stop_metadata.standardised_location_y
         ))
         pin.setGridScale(pinGridScale)
-        pin.setOnRadius(10)
-        pin.setOffRadius(8)
-        pin.setOnColour(stop_metadata.primary_colour)
-        pin.setOffColour(stop_metadata.secondary_colour)
         pin.setIsFlashing(True)
 
         return pin
