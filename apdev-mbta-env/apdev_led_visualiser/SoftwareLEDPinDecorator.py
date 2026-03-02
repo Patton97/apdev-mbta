@@ -1,9 +1,13 @@
 from __future__ import annotations
 from dataclasses import dataclass
 
-from .SoftwareLEDPin import SoftwareLEDPin
+import pygame
 
-from apdev_led_visualiser.SoftwareLEDPinAnimationComponentFactory import SoftwareLEDPinAnimationComponentFactory
+from apdev_mbta_data.LabelPlacement import LabelPlacement
+
+from .SoftwareLEDPin import SoftwareLEDPin
+from .SoftwareLEDPinFlashingAnimationComponentFactory import SoftwareLEDPinFlashingAnimationComponentFactory
+from .LabelComponent import LabelComponent
 
 @dataclass(frozen=True)
 class ImmutableSoftwareLEDPinDecoratorConfig(object):
@@ -11,29 +15,29 @@ class ImmutableSoftwareLEDPinDecoratorConfig(object):
     offColour:str = None
     onRadius:int = 0
     offRadius:int = 0
-    animComponentFactory:SoftwareLEDPinAnimationComponentFactory = None
-    offLengthInMilliseconds:int = 0
-    onLengthInMilliseconds:int = 0
+    animComponentFactory:SoftwareLEDPinFlashingAnimationComponentFactory = None
+    labelPlacement:LabelPlacement = LabelPlacement.NONE
+    labelText:str = None
 
 class SoftwareLEDPinDecorator(object):
-    __config:ImmutableSoftwareLEDPinDecoratorConfig
+    def decorate(self:SoftwareLEDPinDecorator, pinToDecorate:SoftwareLEDPin, config:ImmutableSoftwareLEDPinDecoratorConfig):
+        pinToDecorate.setOnColour(config.onColour)
+        pinToDecorate.setOffColour(config.offColour)
 
-    def __init__(self:SoftwareLEDPinDecorator, config:ImmutableSoftwareLEDPinDecoratorConfig):
-        self.__config = config
+        pinToDecorate.setOnRadius(config.onRadius)
+        pinToDecorate.setOffRadius(config.offRadius)
 
-    def decorate(self:SoftwareLEDPinDecorator, pinToDecorate:SoftwareLEDPin):
-        pinToDecorate.setOnColour(self.__config.onColour)
-        pinToDecorate.setOffColour(self.__config.offColour)
-
-        pinToDecorate.setOnRadius(self.__config.onRadius)
-        pinToDecorate.setOffRadius(self.__config.offRadius)
-        if self.__config.animComponentFactory is not None:
-            animComponent = self.__config.animComponentFactory.createFlashingAnimationComponent(
-                pinToDecorate,
-                self.__config.offLengthInMilliseconds,
-                self.__config.onLengthInMilliseconds
-            )
+        if config.animComponentFactory is not None:
+            animComponent = config.animComponentFactory.create(pinToDecorate)
             pinToDecorate.addComponent(animComponent)
+
+        if config.labelPlacement is not LabelPlacement.NONE:
+            labelComponent = LabelComponent(
+                config.labelPlacement,
+                config.labelText,
+                pygame.Vector2(config.onRadius, config.onRadius)
+            )
+            pinToDecorate.addComponent(labelComponent)
 
     def decorateAll(self:SoftwareLEDPinDecorator, pinsToDecorate:list[SoftwareLEDPin]):
         for pinToDecorate in pinsToDecorate:

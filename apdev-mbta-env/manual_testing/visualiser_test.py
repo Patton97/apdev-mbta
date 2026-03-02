@@ -8,7 +8,7 @@ from apdev_led_visualiser.SoftwareLEDLineDecorator import SoftwareLEDLineDecorat
 from apdev_led_visualiser.SoftwareLEDPin import SoftwareLEDPin
 from apdev_led_visualiser.SoftwareLEDPinController import SoftwareLEDPinController
 from apdev_led_visualiser.SoftwareLEDLine import SoftwareLEDLine
-from apdev_led_visualiser.SoftwareLEDPinAnimationComponentFactory import SoftwareLEDPinAnimationComponentFactory
+from apdev_led_visualiser.SoftwareLEDPinFlashingAnimationComponentFactory import SoftwareLEDPinFlashingAnimationComponentFactory
 
 from apdev_mbta_data.ImmutableLineMetadata import ImmutableLineMetadata
 from apdev_mbta_data.APDevMBTADataReader import APDevMBTADataReader
@@ -20,6 +20,11 @@ GRID_SCALE = 25
 
 LED_PIN_ON_RADIUS = 10
 LED_PIN_OFF_RADIUS = 8
+
+LED_OFF_COLOUR = 'black'
+
+LED_PIN_FLASH_ANIM_OFF_TIME_IN_MILLISECONDS = 1000
+LED_PIN_FLASH_ANIM_ON_TIME_IN_MILLISECONDS = 2000
 
 def runVisualiserTest():
     canvas = LEDVisualiser()
@@ -55,18 +60,23 @@ def __addPinsForStops(lineMetadata:ImmutableLineMetadata, canvas:LEDVisualiser):
         GRID_SCALE
     )
 
-    pinDecoratorConfig = ImmutableSoftwareLEDPinDecoratorConfig(
-        lineMetadata.primary_colour,
-        'black',
-        LED_PIN_ON_RADIUS,
-        LED_PIN_OFF_RADIUS,
-        SoftwareLEDPinAnimationComponentFactory(),
-        1000,
-        2000
+    pinDecorator = SoftwareLEDPinDecorator()
+    flashingAnimComponentFactory = SoftwareLEDPinFlashingAnimationComponentFactory(
+        LED_PIN_FLASH_ANIM_OFF_TIME_IN_MILLISECONDS,
+        LED_PIN_FLASH_ANIM_ON_TIME_IN_MILLISECONDS
     )
-
-    pinDecorator = SoftwareLEDPinDecorator(pinDecoratorConfig)
-    pinDecorator.decorateAll(pinsKeyedByStationID.values())
+    for stop in lineMetadata.stops:
+        pin = pinsKeyedByStationID[stop.id]
+        decoratorConfig = ImmutableSoftwareLEDPinDecoratorConfig(
+            lineMetadata.primary_colour,
+            LED_OFF_COLOUR,
+            LED_PIN_ON_RADIUS,
+            LED_PIN_OFF_RADIUS,
+            flashingAnimComponentFactory,
+            stop.label_placement,
+            stop.name
+        )
+        pinDecorator.decorate(pin, decoratorConfig)
 
     controllersKeyedByStationID:dict[str,SoftwareLEDPinController] = dict[str,SoftwareLEDPinController]()
     for key in pinsKeyedByStationID:

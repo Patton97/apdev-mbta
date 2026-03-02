@@ -28,13 +28,11 @@ class SoftwareLEDPinFactory(object):
         pinGridScale:int) -> SoftwareLEDPin:
 
         pin = SoftwareLEDPin()
-        pin.setLabelText(stop_metadata.name)
         pin.setGridPosition(pygame.Vector2(
             stop_metadata.standardised_location_x,
             stop_metadata.standardised_location_y
         ))
         pin.setGridScale(pinGridScale)
-        pin.setLabelPlacement(stop_metadata.label_placement)
         pin.setOnRadius(10)
         pin.setOffRadius(8)
         pin.setOnColour(stop_metadata.primary_colour)
