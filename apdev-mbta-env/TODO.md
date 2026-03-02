@@ -1,4 +1,3 @@
-- TODO AP: Rename flashing anim component factory to something short
 - TODO AP: Reorganise apdev_led_visualiser to move mbta-specific classes into apdev_mbta_led_visualiser 
 - TODO AP: Figure out the "Vehicle is stopped at an unknown stop" issue
 - TODO AP: Add data for all other lines & stops

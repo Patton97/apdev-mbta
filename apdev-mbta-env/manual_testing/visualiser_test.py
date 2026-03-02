@@ -8,7 +8,7 @@ from apdev_led_visualiser.SoftwareLEDLineDecorator import SoftwareLEDLineDecorat
 from apdev_led_visualiser.SoftwareLEDPin import SoftwareLEDPin
 from apdev_led_visualiser.SoftwareLEDPinController import SoftwareLEDPinController
 from apdev_led_visualiser.SoftwareLEDLine import SoftwareLEDLine
-from apdev_led_visualiser.SoftwareLEDPinFlashingAnimationComponentFactory import SoftwareLEDPinFlashingAnimationComponentFactory
+from apdev_led_visualiser.FlashingPinAnimFactory import FlashingPinAnimFactory
 
 from apdev_mbta_data.ImmutableLineMetadata import ImmutableLineMetadata
 from apdev_mbta_data.APDevMBTADataReader import APDevMBTADataReader
@@ -61,7 +61,7 @@ def __addPinsForStops(lineMetadata:ImmutableLineMetadata, canvas:LEDVisualiser):
     )
 
     pinDecorator = SoftwareLEDPinDecorator()
-    flashingAnimComponentFactory = SoftwareLEDPinFlashingAnimationComponentFactory(
+    flashingAnimComponentFactory = FlashingPinAnimFactory(
         LED_PIN_FLASH_ANIM_OFF_TIME_IN_MILLISECONDS,
         LED_PIN_FLASH_ANIM_ON_TIME_IN_MILLISECONDS
     )

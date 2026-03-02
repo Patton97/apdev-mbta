@@ -6,7 +6,7 @@ import pygame
 from apdev_mbta_data.LabelPlacement import LabelPlacement
 
 from .SoftwareLEDPin import SoftwareLEDPin
-from .SoftwareLEDPinFlashingAnimationComponentFactory import SoftwareLEDPinFlashingAnimationComponentFactory
+from .FlashingPinAnimFactory import FlashingPinAnimFactory
 from .LabelComponent import LabelComponent
 
 @dataclass(frozen=True)
@@ -15,7 +15,7 @@ class ImmutableSoftwareLEDPinDecoratorConfig(object):
     offColour:str = None
     onRadius:int = 0
     offRadius:int = 0
-    animComponentFactory:SoftwareLEDPinFlashingAnimationComponentFactory = None
+    animComponentFactory:FlashingPinAnimFactory = None
     labelPlacement:LabelPlacement = LabelPlacement.NONE
     labelText:str = None
 
