@@ -5,7 +5,20 @@ from enum import Enum
 import json
 import requests
 
-from . import utils
+from . import utils, routes
+
+class GetVehiclesParams(object):
+
+    def __init__(self:GetVehiclesParams):
+        self.sort:str = ''
+        self.routeTypes:list[routes.RouteType] = []
+
+    def getDictForMBTAAPI(self:GetVehiclesParams) -> dict[str, str]:
+        return {
+            'sort':  self.sort,
+            'filter[route_type]' : ','.join([str(int(routeType.value)) for routeType in self.routeTypes]),
+            'include' : 'stop'
+        }
 
 # https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/reference.md#enum-vehiclestopstatus
 class VehicleStopStatus(Enum):
@@ -30,16 +43,6 @@ def getVehicles(session:requests.Session, params:GetVehiclesParams) -> list[Immu
     )
     responseJsonObj= json.loads(response.content)
     return __parseGetVehiclesResponseContent(responseJsonObj)
-
-class GetVehiclesParams(object):
-    sort:str = ''
-    routeTypes:list[str] = []
-    def getDictForMBTAAPI(self:GetVehiclesParams) -> dict[str, str]:
-        return {
-            'sort':  self.sort,
-            'filter[route_type]' : ','.join(map(str, self.routeTypes)),
-            'include' : 'stop'
-        }
 
 def __parseGetVehiclesResponseContent(jsonObj:dict) -> list[ImmutableVehicle]:
     results = []

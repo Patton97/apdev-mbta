@@ -4,7 +4,7 @@ from apddev_mbta_api_wrapper import routes as mbta_routes, stops as mbta_stops, 
 
 def runAPITest():
     getRoutesParams = mbta_routes.GetRoutesParams()
-    getRoutesParams.routeTypes = [0, 1]
+    getRoutesParams.routeTypes = [mbta_routes.RouteType.LIGHT_RAIL, mbta_routes.RouteType.UNDERGROUND]
 
     with requests.Session() as s:
         routes:list[mbta_stops.ImmutableStop] = mbta_routes.getRoutes(s, getRoutesParams)
@@ -19,7 +19,7 @@ def runAPITest():
         routes[i] = mbta_routes.ImmutableRoute(id=routes[i].id, stops=stops)
     
     params = mbta_vehicles.GetVehiclesParams()
-    params.routeTypes = [0,1]
+    params.routeTypes = [mbta_routes.RouteType.LIGHT_RAIL, mbta_routes.RouteType.UNDERGROUND]
 
     with requests.Session() as s:
         vehicles:list[mbta_vehicles.ImmutableVehicle] = mbta_vehicles.getVehicles(s, params)

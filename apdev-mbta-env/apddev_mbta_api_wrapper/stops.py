@@ -6,6 +6,20 @@ import requests
 
 from . import utils
 
+class GetStopsParams(object):
+
+    def __init__(self:GetStopsParams):
+        self.sort:str = ''
+        self.routeFilter:str = ''
+        self.relationshipsToInclude:list[str] = ['route', 'child_stops'] # TODO decide which of these should be defaults vs injected
+
+    def _getDictForMBTAAPI(self:GetStopsParams) -> dict[str, str]:
+        return {
+            'sort':  self.sort,
+            'filter[route]' : self.routeFilter,
+            'include' : ','.join(map(str, self.relationshipsToInclude))
+        }
+
 @dataclass(frozen=True)
 class ImmutableStop(object):
     id:str
@@ -16,22 +30,11 @@ class ImmutableStop(object):
 def getStops(session:requests.Session, params:GetStopsParams) -> list[ImmutableStop]:
     response = session.get(
         utils.MBTA_API_DOMAIN + '/stops',
-        params = params.getDictForMBTAAPI(),
+        params = params._getDictForMBTAAPI(),
         headers = utils.getDefaultHeaders()
     )
     responseJsonObj= json.loads(response.content)
     return __parseGetStopsResponseContent(responseJsonObj)
-
-class GetStopsParams(object):
-    sort:str = ''
-    routeFilter:str = ''
-    relationshipsToInclude:list[str] = ['route', 'child_stops'] # TODO decide which of these should be defaults vs injected
-    def getDictForMBTAAPI(self:GetStopsParams) -> dict[str, str]:
-        return {
-            'sort':  self.sort,
-            'filter[route]' : self.routeFilter,
-            'include' : ','.join(map(str, self.relationshipsToInclude))
-        }
 
 def __parseGetStopsResponseContent(jsonObj:dict) -> list[ImmutableStop]:
     results = []
