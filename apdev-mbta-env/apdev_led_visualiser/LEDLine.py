@@ -4,7 +4,7 @@ from typing import Tuple
 
 import pygame
 
-from .SceneObject import SceneObject
+from apdev_pygame_engine.SceneObject import SceneObject
 
 class LEDLine(SceneObject):
 

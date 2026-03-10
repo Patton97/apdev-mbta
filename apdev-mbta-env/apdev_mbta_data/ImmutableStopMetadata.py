@@ -1,7 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 
-from apdev_led_visualiser.LabelPlacement import LabelPlacement
+from apdev_pygame_engine.labels.LabelPlacement import LabelPlacement
 
 @dataclass(frozen=True)
 class ImmutableStopMetadata(object):

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pygame
 
-from .SceneObject import SceneObject
+from apdev_pygame_engine.SceneObject import SceneObject
 
 class LEDPin(SceneObject):
 

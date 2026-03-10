@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .AnimationComponent import AnimationComponent, ImmutableAnimationStage
+from apdev_pygame_engine.AnimationComponent import AnimationComponent, ImmutableAnimationStage
 
 from .LEDPin import LEDPin
 

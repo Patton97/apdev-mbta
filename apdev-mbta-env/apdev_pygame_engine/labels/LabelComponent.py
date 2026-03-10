@@ -4,8 +4,8 @@ import math
 
 import pygame
 
-from .SceneObject import SceneObject
-from .Component import Component
+from apdev_pygame_engine.SceneObject import SceneObject
+from apdev_pygame_engine.Component import Component
 
 from .LabelPlacement import LabelPlacement
 

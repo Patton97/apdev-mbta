@@ -3,10 +3,11 @@ from dataclasses import dataclass
 
 import pygame
 
+from apdev_pygame_engine.labels.LabelPlacement import LabelPlacement
+from apdev_pygame_engine.labels.LabelComponent import LabelComponent
+
 from .LEDPin import LEDPin
 from .FlashingPinAnimFactory import FlashingPinAnimFactory
-from .LabelPlacement import LabelPlacement
-from .LabelComponent import LabelComponent
 
 @dataclass(frozen=True)
 class ImmutableLEDPinDecoratorConfig(object):

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .ImmutableVector2 import ImmutableVector2
+from apdev_pygame_engine.ImmutableVector2 import ImmutableVector2
 
 from .LEDLine import LEDLine
 
