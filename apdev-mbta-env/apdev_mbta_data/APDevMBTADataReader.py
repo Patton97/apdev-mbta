@@ -4,8 +4,8 @@ import json
 
 from apdev_mbta_data.ImmutableLineMetadata import ImmutableLineMetadata
 from apdev_mbta_data.ImmutableStopMetadata import ImmutableStopMetadata
-from apdev_mbta_data.LabelPlacement import LabelPlacement
-from apdev_mbta_data.ImmutableVector2 import ImmutableVector2
+from apdev_led_visualiser.LabelPlacement import LabelPlacement
+from apdev_led_visualiser.ImmutableVector2 import ImmutableVector2
 
 class APDevMBTADataReader(object):
     def read_from_file(self:APDevMBTADataReader, file_path:str) -> list[ImmutableLineMetadata]:
