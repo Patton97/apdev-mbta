@@ -28,8 +28,9 @@ class ImmutableStop(object):
     child_stop_ids:tuple[str]
 
 def getStops(session:requests.Session, params:GetStopsParams) -> list[ImmutableStop]:
+    url = utils.MBTA_API_DOMAIN + '/stops'
     response = session.get(
-        utils.MBTA_API_DOMAIN + '/stops',
+        url,
         params = params._getDictForMBTAAPI(),
         headers = utils.getDefaultHeaders()
     )

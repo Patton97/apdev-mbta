@@ -18,6 +18,7 @@ env/
 ENV/
 .env/
 .venv/
+.env
 
 #libraries
 lib/
