@@ -6,37 +6,37 @@ import pygame
 
 from .SceneObject import SceneObject
 
-class SoftwareLEDLine(SceneObject):
+class LEDLine(SceneObject):
 
-    def __init__(self:SoftwareLEDLine):
+    def __init__(self:LEDLine):
         self.__gridStartPosition:pygame.Vector2 = pygame.Vector2(0,0)
         self.__gridEndPosition:pygame.Vector2 = pygame.Vector2(0,0)
         self.__gridScale:int = 1        
         self.__width:int = 10
         self.__colour:str = 'black'
 
-    def updateTick(self:SoftwareLEDLine, dt:int):
+    def updateTick(self:LEDLine, dt:int):
         pass
 
-    def renderTick(self:SoftwareLEDLine, screen:pygame.Surface):
+    def renderTick(self:LEDLine, screen:pygame.Surface):
         self.__render(screen)
     
-    def getColour(self:SoftwareLEDLine) -> str:
+    def getColour(self:LEDLine) -> str:
         return self.__colour
     
-    def setColour(self:SoftwareLEDLine, colour:str):
+    def setColour(self:LEDLine, colour:str):
         self.__colour = colour
 
-    def setGridStartPosition(self:SoftwareLEDLine, gridStartPosition:pygame.Vector2):
+    def setGridStartPosition(self:LEDLine, gridStartPosition:pygame.Vector2):
         self.__gridStartPosition = gridStartPosition
 
-    def setGridEndPosition(self:SoftwareLEDLine, gridEndPosition:pygame.Vector2):
+    def setGridEndPosition(self:LEDLine, gridEndPosition:pygame.Vector2):
         self.__gridEndPosition = gridEndPosition
 
-    def setGridScale(self:SoftwareLEDLine, gridScale:int):
+    def setGridScale(self:LEDLine, gridScale:int):
         self.__gridScale = gridScale
     
-    def __getStartRenderPosition(self:SoftwareLEDLine, screen:pygame.Surface) -> pygame.Vector2:
+    def __getStartRenderPosition(self:LEDLine, screen:pygame.Surface) -> pygame.Vector2:
         screenSize:Tuple[int,int] = screen.get_size()
         screenSize:pygame.Vector2 = pygame.Vector2(screenSize[0], screenSize[1])
 
@@ -45,7 +45,7 @@ class SoftwareLEDLine(SceneObject):
             screenSize.y - self.__gridStartPosition.y * self.__gridScale
         )
     
-    def __getEndRenderPosition(self:SoftwareLEDLine, screen:pygame.Surface) -> pygame.Vector2:
+    def __getEndRenderPosition(self:LEDLine, screen:pygame.Surface) -> pygame.Vector2:
         screenSize:Tuple[int,int] = screen.get_size()
         screenSize:pygame.Vector2 = pygame.Vector2(screenSize[0], screenSize[1])
 
@@ -54,7 +54,7 @@ class SoftwareLEDLine(SceneObject):
             screenSize.y - self.__gridEndPosition.y * self.__gridScale
         )
     
-    def __renderLine(self:SoftwareLEDLine, screen:pygame.Surface):
+    def __renderLine(self:LEDLine, screen:pygame.Surface):
         pygame.draw.line(
             screen,
             self.getColour(),
@@ -63,7 +63,7 @@ class SoftwareLEDLine(SceneObject):
             self.__width
         )
 
-    def __renderJointCircle(self:SoftwareLEDLine, screen:pygame.Surface, renderPosition:pygame.Vector2):
+    def __renderJointCircle(self:LEDLine, screen:pygame.Surface, renderPosition:pygame.Vector2):
         pygame.draw.circle(
             screen,
             self.getColour(),
@@ -71,7 +71,7 @@ class SoftwareLEDLine(SceneObject):
             self.__width / 3
         )
     
-    def __render(self:SoftwareLEDLine, screen:pygame.Surface):
+    def __render(self:LEDLine, screen:pygame.Surface):
         self.__renderLine(screen)
         self.__renderJointCircle(screen, self.__getStartRenderPosition(screen))
         self.__renderJointCircle(screen, self.__getEndRenderPosition(screen))

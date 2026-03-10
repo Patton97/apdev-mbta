@@ -4,9 +4,9 @@ import pygame
 
 from .SceneObject import SceneObject
 
-class SoftwareLEDPin(SceneObject):
+class LEDPin(SceneObject):
 
-    def __init__(self:SoftwareLEDPin):
+    def __init__(self:LEDPin):
         super().__init__()
 
         self.__onColour:str = 'black'
@@ -18,40 +18,40 @@ class SoftwareLEDPin(SceneObject):
         self.__isLit:bool = False
         self.__isFlashing:bool = False
 
-    def renderTick(self:SoftwareLEDPin, screen:pygame.Surface):
+    def renderTick(self:LEDPin, screen:pygame.Surface):
         super().renderTick(screen)
         self.__renderPin(screen)
 
-    def setOnColour(self:SoftwareLEDPin, onColour:str):
+    def setOnColour(self:LEDPin, onColour:str):
         self.__onColour = onColour
 
-    def setOffColour(self:SoftwareLEDPin, offColour:str):
+    def setOffColour(self:LEDPin, offColour:str):
         self.__offColour = offColour
 
-    def setOnRadius(self:SoftwareLEDPin, onRadius:int):
+    def setOnRadius(self:LEDPin, onRadius:int):
         self.__onRadius = onRadius
 
-    def setOffRadius(self:SoftwareLEDPin, offRadius:int):
+    def setOffRadius(self:LEDPin, offRadius:int):
         self.__offRadius = offRadius
 
-    def setIsFlashing(self:SoftwareLEDPin, isFlashing:bool):
+    def setIsFlashing(self:LEDPin, isFlashing:bool):
         self.__isFlashing = isFlashing
 
-    def getIsFlashing(self:SoftwareLEDPin) -> bool:
+    def getIsFlashing(self:LEDPin) -> bool:
         return self.__isFlashing
 
-    def _setIsLit(self:SoftwareLEDPin, isLit:bool):
+    def _setIsLit(self:LEDPin, isLit:bool):
         self.__isLit = isLit
 
-    def __getColour(self:SoftwareLEDPin) -> str:
+    def __getColour(self:LEDPin) -> str:
         if self.__isLit:
             return self.__onColour
         return self.__offColour
 
-    def __getRadius(self:SoftwareLEDPin) -> int:
+    def __getRadius(self:LEDPin) -> int:
         if self.__isLit:
             return self.__onRadius
         return self.__offRadius
 
-    def __renderPin(self:SoftwareLEDPin, screen:pygame.Surface):
+    def __renderPin(self:LEDPin, screen:pygame.Surface):
         pygame.draw.circle(screen, self.__getColour(), self.getRenderPosition(screen), self.__getRadius())

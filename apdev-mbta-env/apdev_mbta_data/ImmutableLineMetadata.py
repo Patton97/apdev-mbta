@@ -2,7 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from apdev_mbta_data.ImmutableStopMetadata import ImmutableStopMetadata
-from apdev_mbta_data.ImmutableVector2 import ImmutableVector2
+from apdev_led_visualiser.ImmutableVector2 import ImmutableVector2
 
 @dataclass(frozen=True)
 class ImmutableLineMetadata(object):

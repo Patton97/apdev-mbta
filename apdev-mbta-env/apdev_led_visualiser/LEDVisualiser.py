@@ -2,15 +2,13 @@ from __future__ import annotations
 
 import pygame
 
-from .SoftwareLEDPin import SoftwareLEDPin
-from .SoftwareLEDPinController import SoftwareLEDPinController
+from .SceneObject import SceneObject
 
 class LEDVisualiser(object):
 
     def __init__(self:LEDVisualiser):
         pygame.init()
-        self.__objects:list[SoftwareLEDPin] = []
-        self.__controllersKeyedById:dict[str, SoftwareLEDPinController] = dict[str, SoftwareLEDPinController]()
+        self.__objects:list[SceneObject] = []
         self.__screen:pygame.Surface = None
 
     def getScreenSize(self:LEDVisualiser) -> pygame.Vector2:
@@ -28,9 +26,6 @@ class LEDVisualiser(object):
     def setFullscreen(self:LEDVisualiser, newIsFullscreen:bool):
         currentSize = pygame.display.get_window_size()
         self.setScreenSize(currentSize[0], currentSize[1], newIsFullscreen)
-
-    def addLEDController(self:LEDVisualiser, id:str, controllerToAdd:SoftwareLEDPinController):
-        self.__controllersKeyedById[id] = controllerToAdd
 
     def addToCanvas(self:LEDVisualiser, objectToAdd):
         self.__objects.append(objectToAdd)

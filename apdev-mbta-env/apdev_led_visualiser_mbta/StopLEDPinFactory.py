@@ -4,16 +4,16 @@ import pygame
 
 from apdev_mbta_data.ImmutableStopMetadata import ImmutableStopMetadata
 
-from apdev_led_visualiser.SoftwareLEDPin import SoftwareLEDPin
+from apdev_led_visualiser.LEDPin import LEDPin
 
-class SoftwareLEDPinFactory(object):
+class StopLEDPinFactory(object):
 
     def createAllPins(
-        self:SoftwareLEDPinFactory,
+        self:StopLEDPinFactory,
         stop_metadata_list:list[ImmutableStopMetadata],
-        pinGridScale:int) -> dict[str, SoftwareLEDPin]:
+        pinGridScale:int) -> dict[str, LEDPin]:
 
-        pinsKeyedByStationID:dict[str, SoftwareLEDPin] = dict[str,  SoftwareLEDPin]()
+        pinsKeyedByStationID:dict[str, LEDPin] = dict[str,  LEDPin]()
         for stop_metadata in stop_metadata_list:
             pinsKeyedByStationID[stop_metadata.id] = self.__createPin(
                 stop_metadata,
@@ -23,11 +23,11 @@ class SoftwareLEDPinFactory(object):
         return pinsKeyedByStationID
 
     def __createPin(
-        self:SoftwareLEDPinFactory,
+        self:StopLEDPinFactory,
         stop_metadata:ImmutableStopMetadata,
-        pinGridScale:int) -> SoftwareLEDPin:
+        pinGridScale:int) -> LEDPin:
 
-        pin = SoftwareLEDPin()
+        pin = LEDPin()
         pin.setGridPosition(pygame.Vector2(
             stop_metadata.standardised_location_x,
             stop_metadata.standardised_location_y

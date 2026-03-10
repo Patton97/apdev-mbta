@@ -1,13 +1,14 @@
 import pygame 
 
 from apdev_led_visualiser.LEDVisualiser import LEDVisualiser
-from apdev_led_visualiser.SoftwareLEDPinFactory import SoftwareLEDPinFactory
-from apdev_led_visualiser.SoftwareLEDLineFactory import SoftwareLEDLineFactory
-from apdev_led_visualiser.SoftwareLEDPinDecorator import SoftwareLEDPinDecorator, ImmutableSoftwareLEDPinDecoratorConfig
-from apdev_led_visualiser.SoftwareLEDLineDecorator import SoftwareLEDLineDecorator, ImmutableSoftwareLEDLineDecoratorConfig
-from apdev_led_visualiser.SoftwareLEDPin import SoftwareLEDPin
-from apdev_led_visualiser.SoftwareLEDPinController import SoftwareLEDPinController
-from apdev_led_visualiser.SoftwareLEDLine import SoftwareLEDLine
+
+from apdev_led_visualiser_mbta.StopLEDPinFactory import SoftwareLEDPinFactory
+from apdev_led_visualiser.LEDLineFactory import SoftwareLEDLineFactory
+from apdev_led_visualiser.LEDPinDecorator import SoftwareLEDPinDecorator, ImmutableSoftwareLEDPinDecoratorConfig
+from apdev_led_visualiser.LEDLineDecorator import SoftwareLEDLineDecorator, ImmutableSoftwareLEDLineDecoratorConfig
+from apdev_led_visualiser.LEDPin import SoftwareLEDPin
+from apdev_led_visualiser.LEDPinController import LEDPinController
+from apdev_led_visualiser.LEDLine import SoftwareLEDLine
 from apdev_led_visualiser.FlashingPinAnimFactory import FlashingPinAnimFactory
 
 from apdev_mbta_data.ImmutableLineMetadata import ImmutableLineMetadata
@@ -77,11 +78,6 @@ def __addPinsForStops(lineMetadata:ImmutableLineMetadata, canvas:LEDVisualiser):
             stop.name
         )
         pinDecorator.decorate(pin, decoratorConfig)
-
-    controllersKeyedByStationID:dict[str,SoftwareLEDPinController] = dict[str,SoftwareLEDPinController]()
-    for key in pinsKeyedByStationID:
-        controllersKeyedByStationID[key] = SoftwareLEDPinController(pinsKeyedByStationID[key])
-        canvas.addLEDController(key, controllersKeyedByStationID[key])
 
     for pin in pinsKeyedByStationID.values():
         canvas.addToCanvas(pin)

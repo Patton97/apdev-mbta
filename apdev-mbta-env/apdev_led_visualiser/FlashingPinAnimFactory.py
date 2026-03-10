@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from apdev_led_visualiser.SoftwareLEDPin import SoftwareLEDPin
+from .AnimationComponent import AnimationComponent, ImmutableAnimationStage
 
-from apdev_led_visualiser.AnimationComponent import AnimationComponent, ImmutableAnimationStage
+from .LEDPin import LEDPin
 
 class FlashingPinAnimFactory(object):
     def __init__(
@@ -13,7 +13,7 @@ class FlashingPinAnimFactory(object):
         self.__offLengthInMilliseconds = offLengthInMilliseconds
         self.__onLengthInMilliseconds = onLengthInMilliseconds
 
-    def create(self:FlashingPinAnimFactory, pin:SoftwareLEDPin):
+    def create(self:FlashingPinAnimFactory, pin:LEDPin):
         stage0 = lambda: pin._setIsLit(False)
         stage1 = lambda: pin._setIsLit(True)
         return AnimationComponent([

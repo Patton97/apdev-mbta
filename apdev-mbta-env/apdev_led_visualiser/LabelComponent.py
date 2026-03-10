@@ -7,7 +7,7 @@ import pygame
 from .SceneObject import SceneObject
 from .Component import Component
 
-from apdev_mbta_data.LabelPlacement import LabelPlacement
+from .LabelPlacement import LabelPlacement
 
 @dataclass(frozen=True)
 class ImmutableLabelPlacementData(object):

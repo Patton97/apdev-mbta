@@ -1,14 +1,14 @@
 from __future__ import annotations
 
 from ILEDPinController import ILEDPinController
-from .SoftwareLEDPin import SoftwareLEDPin
+from .LEDPin import LEDPin
 
-class SoftwareLEDPinController(ILEDPinController):
+class LEDPinController(ILEDPinController):
 
-    def __init__(self:SoftwareLEDPinController, pinToControl:SoftwareLEDPin):
-        self.__controlledPin:SoftwareLEDPin = pinToControl
+    def __init__(self:LEDPinController, pinToControl:LEDPin):
+        self.__controlledPin:LEDPin = pinToControl
     
-    def get_is_lit(self:SoftwareLEDPinController) -> bool:
+    def get_is_lit(self:LEDPinController) -> bool:
         return self.__controlledPin.getIsFlashing()
     
     def set_is_lit(self, is_lit):

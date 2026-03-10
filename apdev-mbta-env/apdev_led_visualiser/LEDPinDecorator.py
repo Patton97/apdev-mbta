@@ -3,14 +3,13 @@ from dataclasses import dataclass
 
 import pygame
 
-from apdev_mbta_data.LabelPlacement import LabelPlacement
-
-from .SoftwareLEDPin import SoftwareLEDPin
+from .LEDPin import LEDPin
 from .FlashingPinAnimFactory import FlashingPinAnimFactory
+from .LabelPlacement import LabelPlacement
 from .LabelComponent import LabelComponent
 
 @dataclass(frozen=True)
-class ImmutableSoftwareLEDPinDecoratorConfig(object):
+class ImmutableLEDPinDecoratorConfig(object):
     onColour:str = None
     offColour:str = None
     onRadius:int = 0
@@ -19,8 +18,9 @@ class ImmutableSoftwareLEDPinDecoratorConfig(object):
     labelPlacement:LabelPlacement = LabelPlacement.NONE
     labelText:str = None
 
-class SoftwareLEDPinDecorator(object):
-    def decorate(self:SoftwareLEDPinDecorator, pinToDecorate:SoftwareLEDPin, config:ImmutableSoftwareLEDPinDecoratorConfig):
+class LEDPinDecorator(object):
+
+    def decorate(self:LEDPinDecorator, pinToDecorate:LEDPin, config:ImmutableLEDPinDecoratorConfig):
         pinToDecorate.setOnColour(config.onColour)
         pinToDecorate.setOffColour(config.offColour)
 
@@ -39,6 +39,6 @@ class SoftwareLEDPinDecorator(object):
             )
             pinToDecorate.addComponent(labelComponent)
 
-    def decorateAll(self:SoftwareLEDPinDecorator, pinsToDecorate:list[SoftwareLEDPin]):
+    def decorateAll(self:LEDPinDecorator, pinsToDecorate:list[LEDPin]):
         for pinToDecorate in pinsToDecorate:
             self.decorate(pinToDecorate)

@@ -5,6 +5,7 @@ import pygame
 from .Component import Component
 
 class SceneObject(object):
+
     def __init__(self:SceneObject):
         self.__components:list[Component] = []
         self.__gridPosition:pygame.Vector2 = pygame.Vector2(0,0)

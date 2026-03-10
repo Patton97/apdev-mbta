@@ -1,18 +1,18 @@
 from __future__ import annotations
 
-from apdev_mbta_data.ImmutableVector2 import ImmutableVector2
+from .ImmutableVector2 import ImmutableVector2
 
-from apdev_led_visualiser.SoftwareLEDLine import SoftwareLEDLine
+from .LEDLine import LEDLine
 
-class SoftwareLEDLineFactory(object):
-    def createAllLines(self:SoftwareLEDLineFactory, line_anchors:tuple[ImmutableVector2], grid_scale:int):
-        lines:list[SoftwareLEDLine] = []
+class LEDLineFactory(object):
+    def createAllLines(self:LEDLineFactory, line_anchors:tuple[ImmutableVector2], grid_scale:int):
+        lines:list[LEDLine] = []
         
         lineAnchorCount = len(line_anchors)
         for i in range(lineAnchorCount):
             if (i+1 >= lineAnchorCount):
                 break
-            ledLine = SoftwareLEDLine()
+            ledLine = LEDLine()
             lines.append(ledLine)
             ledLine.setGridStartPosition(line_anchors[i])
             ledLine.setGridEndPosition(line_anchors[i+1])
