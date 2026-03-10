@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ILEDPinController import ILEDPinController
+from apdev_led.ILEDPinController import ILEDPinController
 from .LEDPin import LEDPin
 
 class LEDPinController(ILEDPinController):
