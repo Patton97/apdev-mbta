@@ -11,11 +11,14 @@ class LEDPinController(ILEDPinController):
     def get_is_lit(self:LEDPinController) -> bool:
         return self.__controlledPin.getIsFlashing()
     
-    def set_is_lit(self, is_lit):
+    def set_is_lit(self:LEDPinController, is_lit:bool):
         self.__controlledPin.setIsFlashing(is_lit)
 
-    def toggle_is_lit(self):
+    def toggle_is_lit(self:LEDPinController):
         wasLit = self.__controlledPin.getIsFlashing()
         newIsList = not wasLit
         self.__controlledPin.setIsFlashing(newIsList)
         return newIsList
+    
+    def set_colours(self:LEDPinController, colours:list[str]):
+        self.__controlledPin.setColours(colours)

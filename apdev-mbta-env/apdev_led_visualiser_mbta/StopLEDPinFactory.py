@@ -33,6 +33,5 @@ class StopLEDPinFactory(object):
             stop_metadata.standardised_location_y
         ))
         pin.setGridScale(pinGridScale)
-        pin.setIsFlashing(True)
 
         return pin

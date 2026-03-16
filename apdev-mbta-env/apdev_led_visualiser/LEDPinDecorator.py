@@ -11,8 +11,6 @@ from .FlashingPinAnimFactory import FlashingPinAnimFactory
 
 @dataclass(frozen=True)
 class ImmutableLEDPinDecoratorConfig(object):
-    onColour:str = None
-    offColour:str = None
     onRadius:int = 0
     offRadius:int = 0
     animComponentFactory:FlashingPinAnimFactory = None
@@ -22,9 +20,6 @@ class ImmutableLEDPinDecoratorConfig(object):
 class LEDPinDecorator(object):
 
     def decorate(self:LEDPinDecorator, pinToDecorate:LEDPin, config:ImmutableLEDPinDecoratorConfig):
-        pinToDecorate.setOnColour(config.onColour)
-        pinToDecorate.setOffColour(config.offColour)
-
         pinToDecorate.setOnRadius(config.onRadius)
         pinToDecorate.setOffRadius(config.offRadius)
 

@@ -30,10 +30,20 @@ import main_api
 
 threading.Thread(target=__startApiLoop, daemon=True).start()
 
-from apdev_mbta_data.APDevMBTADataReader import APDevMBTADataReader
-from apdev_mbta_data.ImmutableLineMetadata import ImmutableLineMetadata
+from apdev_mbta_data.LinesMetadataJsonReader import LinesMetadataJsonReader
+from apdev_mbta_data.StopsMetadataJsonReader import StopsMetadataJsonReader
 
-reader = APDevMBTADataReader()
-filePath:str = "/home/andrewpattondev/Projects/apdev-mbta/apdev-mbta-env/apdev_mbta_data/example_file.json"
-lines:list[ImmutableLineMetadata] = reader.read_from_file(filePath)
-main_visualiser.startVisualiser(lines)
+from apdev_mbta_data.ImmutableLineMetadata import ImmutableLineMetadata
+from apdev_mbta_data.ImmutableStopMetadata import ImmutableStopMetadata
+
+metadataFolder:str = "/home/andrewpattondev/Projects/apdev-mbta/apdev-mbta-env/apdev_mbta_data/"
+
+reader = LinesMetadataJsonReader()
+linesFilePath:str = metadataFolder + "lines.json"
+lines:list[ImmutableLineMetadata] = reader.read_from_file(linesFilePath)
+
+reader = StopsMetadataJsonReader()
+stopsFilePath:str = metadataFolder + "green-D-stops.json"
+stops:list[ImmutableStopMetadata] = reader.read_from_file(stopsFilePath)
+
+main_visualiser.startVisualiser(lines, stops)

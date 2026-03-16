@@ -1,4 +1,4 @@
-from apdev_mbta_data.APDevMBTADataReader import APDevMBTADataReader
+from apdev_mbta_data.LinesMetadataJsonReader import APDevMBTADataReader
 from apdev_mbta_data.ImmutableLineMetadata import ImmutableLineMetadata
 
 import main_visualiser

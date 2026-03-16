@@ -15,6 +15,7 @@ from apdev_led_visualiser.FlashingPinAnimFactory import FlashingPinAnimFactory
 from apdev_led_visualiser_mbta.StopLEDPinFactory import StopLEDPinFactory
 
 from apdev_mbta_data.ImmutableLineMetadata import ImmutableLineMetadata
+from apdev_mbta_data.ImmutableStopMetadata import ImmutableStopMetadata
 
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
@@ -32,15 +33,17 @@ LED_PIN_FLASH_ANIM_ON_TIME_IN_MILLISECONDS = 2000
 __visualiser:LEDVisualiser
 __controllersKeyedByStopID:dict[str, ILEDPinController] = {}
 
-def startVisualiser(lines:list[ImmutableLineMetadata]):
+def startVisualiser(lines:list[ImmutableLineMetadata], stops:list[ImmutableStopMetadata]):
     pygame.init()
 
     global __visualiser
     __visualiser = LEDVisualiser()
     __visualiser.setScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT, newIsFullscreen=False)
 
-    for i in range(len(lines)):
-        __addSceneObjectsForLine(lines[i], __visualiser)
+    for line in lines:
+        __addSplinesForLine(line, __visualiser)
+
+    __addPinsForStops(stops, __visualiser)
 
     __visualiser.start()
 
@@ -55,41 +58,36 @@ def getLEDPinController(stopID:str) -> ILEDPinController:
 def stopVisualiser():
     __visualiser.stop()
 
-def __addSceneObjectsForLine(lineMetadata:ImmutableLineMetadata, visualiser:LEDVisualiser):
-    __addSplinesForLine(lineMetadata, visualiser)
-    __addPinsForStops(lineMetadata, visualiser)
-
 def __addSplinesForLine(lineMetadata:ImmutableLineMetadata, visualiser:LEDVisualiser):
     factory = LEDLineFactory()
-    lines:list[LEDLine] = factory.createAllLines(lineMetadata.line_anchors, GRID_SCALE)
+    splines:list[LEDLine] = factory.createAllLines(lineMetadata.line_anchors, GRID_SCALE)
     
     decoratorConfig = ImmutableLEDLineDecoratorConfig(lineMetadata.secondary_colour)
     decorator = LEDLineDecorator(decoratorConfig)
-    decorator.decorateAll(lines)
+    decorator.decorateAll(splines)
 
-    for line in lines:
-        visualiser.addToCanvas(line)
+    for spline in splines:
+        visualiser.addToCanvas(spline)    
 
-def __addPinsForStops(lineMetadata:ImmutableLineMetadata, visualiser:LEDVisualiser):
+def __addPinsForStops(stops:list[ImmutableStopMetadata], visualiser:LEDVisualiser):
     pinFactory = StopLEDPinFactory()
     pinsKeyedByStationID:dict[str, LEDPin] = pinFactory.createAllPins(
-        lineMetadata.stops,
+        stops,
         GRID_SCALE
     )
-
     pinDecorator = LEDPinDecorator()
+
     flashingAnimComponentFactory = FlashingPinAnimFactory(
         LED_PIN_FLASH_ANIM_OFF_TIME_IN_MILLISECONDS,
         LED_PIN_FLASH_ANIM_ON_TIME_IN_MILLISECONDS
     )
-    for stop in lineMetadata.stops:
+
+    for stop in stops:
         pin = pinsKeyedByStationID[stop.id]
 
         global __controllersKeyedByStopID
         __controllersKeyedByStopID[stop.id] = LEDPinController(pin)
         decoratorConfig = ImmutableLEDPinDecoratorConfig(
-            lineMetadata.primary_colour,
-            LED_OFF_COLOUR,
             LED_PIN_ON_RADIUS,
             LED_PIN_OFF_RADIUS,
             flashingAnimComponentFactory,

@@ -9,8 +9,9 @@ class LEDPin(SceneObject):
     def __init__(self:LEDPin):
         super().__init__()
 
-        self.__onColour:str = 'black'
-        self.__offColour:str = 'black'
+        self.__currentColourIndex:int = 0
+        self.__colours:list[str] = []
+        self.__offColour:str = 'white'
 
         self.__onRadius:int = 0
         self.__offRadius:int = 0
@@ -22,11 +23,8 @@ class LEDPin(SceneObject):
         super().renderTick(screen)
         self.__renderPin(screen)
 
-    def setOnColour(self:LEDPin, onColour:str):
-        self.__onColour = onColour
-
-    def setOffColour(self:LEDPin, offColour:str):
-        self.__offColour = offColour
+    def setColours(self:LEDPin, colours:list[str]):
+        self.__colours = colours
 
     def setOnRadius(self:LEDPin, onRadius:int):
         self.__onRadius = onRadius
@@ -45,7 +43,7 @@ class LEDPin(SceneObject):
 
     def __getColour(self:LEDPin) -> str:
         if self.__isLit:
-            return self.__onColour
+            return self.__colours[self.__currentColourIndex]
         return self.__offColour
 
     def __getRadius(self:LEDPin) -> int:
