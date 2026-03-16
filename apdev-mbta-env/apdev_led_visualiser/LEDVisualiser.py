@@ -4,12 +4,14 @@ import pygame
 
 from apdev_pygame_engine.SceneObject import SceneObject
 
+MAX_FPS = 60
+
 class LEDVisualiser(object):
 
     def __init__(self:LEDVisualiser):
-        pygame.init()
         self.__objects:list[SceneObject] = []
         self.__screen:pygame.Surface = None
+        self.__looping:bool = False
 
     def getScreenSize(self:LEDVisualiser) -> pygame.Vector2:
         currentSize = pygame.display.get_window_size()
@@ -31,29 +33,40 @@ class LEDVisualiser(object):
         self.__objects.append(objectToAdd)
 
     def start(self:LEDVisualiser):
-        self.__loop()
+        if not self.__looping:
+            self.__startLoop()
 
-    def __loop(self:LEDVisualiser):
+    def stop(self:LEDVisualiser):
+        self.__looping = False
+
+    def __startLoop(self:LEDVisualiser):
         clock = pygame.time.Clock()
-        running = True
+        self.__looping = True
 
-        MAX_FPS = 60
-        deltaTime = 1 / MAX_FPS * 1000
-        
-        while running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-
-            self.__screen.fill('black')
-
-            for object in self.__objects:
-                object.updateTick(deltaTime)
-                object.renderTick(self.__screen)
-
-            pygame.display.flip()
-
-            deltaTime = clock.tick(MAX_FPS)
+        while self.__looping:
+            self.__tickLoop(clock, MAX_FPS)            
 
         pygame.quit()
-        return
+    
+    def __tickLoop(self:LEDVisualiser, clock:pygame.time.Clock, maxFPS:int):
+        deltaTime = clock.tick(maxFPS)
+        
+        self.__processEvents()
+        self.__updateAllObjects(deltaTime)
+
+        self.__screen.fill('black')
+        self.__renderAllObjects()
+        pygame.display.flip()
+
+    def __processEvents(self:LEDVisualiser):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.stop()
+
+    def __updateAllObjects(self:LEDVisualiser, deltaTime:int):
+        for object in self.__objects:
+            object.updateTick(deltaTime)
+
+    def __renderAllObjects(self:LEDVisualiser):
+        for object in self.__objects:
+            object.renderTick(self.__screen)
