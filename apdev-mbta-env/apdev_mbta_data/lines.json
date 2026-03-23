@@ -1,6 +1,27 @@
 {
     "lines": 
     [
+
+        {
+            "line_id" : "Green-B",
+            "primary_colour" : "chartreuse",
+            "secondary_colour" : "chartreuse4",
+            "line_anchors" :
+            [
+                
+            ]
+        },
+
+        {
+            "line_id" : "Green-C",
+            "primary_colour" : "chartreuse",
+            "secondary_colour" : "chartreuse4",
+            "line_anchors" :
+            [
+                
+            ]
+        },
+
         {
             "line_id" : "Green-D",
             "primary_colour" : "chartreuse",
@@ -15,6 +36,26 @@
                 { "x" : 40, "y" : 29 },
                 { "x" : 35, "y" : 34 },
                 { "x" : 31, "y" : 34 }
+            ]
+        },
+
+        {
+            "line_id" : "Green-E",
+            "primary_colour" : "chartreuse",
+            "secondary_colour" : "chartreuse4",
+            "line_anchors" :
+            [
+                
+            ]
+        },
+
+        {
+            "line_id" : "Orange",
+            "primary_colour" : "orange",
+            "secondary_colour" : "orange",
+            "line_anchors" :
+            [
+                
             ]
         }
     ]

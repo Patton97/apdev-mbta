@@ -16,7 +16,7 @@ class FlashingPinAnimFactory(object):
     def create(self:FlashingPinAnimFactory, pin:LEDPin):
         enterStage0 = lambda: self.__turnOff(pin)
         enterStage1 = lambda: self.__turnOn(pin)
-        updateStage1 = lambda dt: self.__updateOnLED(pin, dt)
+        updateStage1 = lambda dt, timeUntilNextStage: self.__updateOnLED(pin, dt, timeUntilNextStage)
 
         return AnimationComponent([
             ImmutableAnimationStage(enterStage0, None, self.__offLengthInMilliseconds),
@@ -30,12 +30,12 @@ class FlashingPinAnimFactory(object):
         if pin.getIsFlashing():
             pin._setIsLit(True)
 
-    def __updateOnLED(self:FlashingPinAnimFactory, pin:LEDPin, dt:float):
-        if not pin.getIsFlashing():
+    def __updateOnLED(self:FlashingPinAnimFactory, pin:LEDPin, dt:float, timeUntilNextStage:float):
+        if not pin.getIsFlashing() or len(pin.getColours()) == 0:
             pin.__currentColourIndex = 0
-            pin.__colours.clear()
             return
         
-        # TODO AP: Figure out some sort of index selection based on delta time
-        
+        timePerColour = self.__onLengthInMilliseconds / len(pin.getColours())
+        index = int(timeUntilNextStage / timePerColour)
+        pin.__currentColourIndex = index        
         

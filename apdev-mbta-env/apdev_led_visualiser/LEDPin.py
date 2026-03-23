@@ -23,6 +23,9 @@ class LEDPin(SceneObject):
         super().renderTick(screen)
         self.__renderPin(screen)
 
+    def getColours(self:LEDPin) -> str:
+        return self.__colours
+
     def setColours(self:LEDPin, colours:list[str]):
         self.__colours = colours
 
@@ -42,7 +45,7 @@ class LEDPin(SceneObject):
         self.__isLit = isLit
 
     def __getColour(self:LEDPin) -> str:
-        if self.__isLit:
+        if self.__isLit and self.__currentColourIndex < len(self.__colours):
             return self.__colours[self.__currentColourIndex]
         return self.__offColour
 

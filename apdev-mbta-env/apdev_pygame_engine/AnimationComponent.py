@@ -7,7 +7,7 @@ from .Component import Component
 @dataclass(frozen=True)
 class ImmutableAnimationStage(object):
     enterDelegate:Callable[[None], None]
-    updateDelegate:Callable[[float], None]
+    updateDelegate:Callable[[float, float], None]
     lengthInMilliseconds:int
 
 class AnimationComponent(Component):
@@ -27,7 +27,7 @@ class AnimationComponent(Component):
             
         updateDelegate = self.__animationStages[self.__currentAnimationStage].updateDelegate
         if updateDelegate is not None:
-            updateDelegate(dt)
+            updateDelegate(dt, self.__timeUntilNextAnimationStage)
 
     def resetAnimation(self:AnimationComponent):
         self.__setAnimationStage(0)
