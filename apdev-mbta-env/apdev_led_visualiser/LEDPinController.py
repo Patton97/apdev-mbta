@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from apdev_led.ILEDPinController import ILEDPinController
+from apdev_led.BaseLEDPinController import BaseLEDPinController
 from .LEDPin import LEDPin
 
-class LEDPinController(ILEDPinController):
+class LEDPinController(BaseLEDPinController):
 
     def __init__(self:LEDPinController, pinToControl:LEDPin):
         self.__controlledPin:LEDPin = pinToControl
@@ -11,11 +11,5 @@ class LEDPinController(ILEDPinController):
     def get_is_lit(self:LEDPinController) -> bool:
         return self.__controlledPin.getIsFlashing()
     
-    def set_is_lit(self, is_lit):
+    def set_is_lit(self:LEDPinController, is_lit):
         self.__controlledPin.setIsFlashing(is_lit)
-
-    def toggle_is_lit(self):
-        wasLit = self.__controlledPin.getIsFlashing()
-        newIsList = not wasLit
-        self.__controlledPin.setIsFlashing(newIsList)
-        return newIsList
