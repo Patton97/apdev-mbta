@@ -1,34 +1,49 @@
 import board
 import neopixel
 from time import sleep
+import asyncio
+import threading
 
 from apdev_led_neopixel.NeoPixelLEDPinController import NeoPixelLEDPinController
 
+from apdev_led_neopixel.NeoPixelLEDPin import NeoPixelLEDPin
+
+NUM_PIXELS = 50
+BRIGHTNESS = 0.05
+GPIO_DATA_PIN = board.D21
+
+strip:neopixel.NeoPixel = neopixel.NeoPixel(GPIO_DATA_PIN, NUM_PIXELS, brightness=BRIGHTNESS, auto_write=False, pixel_order=neopixel.RGB)
+pins:list[NeoPixelLEDPin] = [None] * NUM_PIXELS
+pinControllers:list[NeoPixelLEDPinController] = [None] * NUM_PIXELS
+
+async def __apiLoop():
+    while True:
+        NUM_FLASHING_PINS = 3
+        for i in range(NUM_FLASHING_PINS):
+            for pinController in pinControllers:
+                pinController.set_is_lit(False)
+            pinControllers[i].set_is_lit(True)
+            await asyncio.sleep(5)
+
+def __startApiLoop():
+    asyncio.run(__apiLoop())
+
 def run():
-
-    NUM_PIXELS = 50
-    BRIGHTNESS = 0.05
-    PIN = board.D21
-
-    strip = neopixel.NeoPixel(PIN, NUM_PIXELS, brightness=BRIGHTNESS, auto_write=False, pixel_order=neopixel.RGB)
-    pinControllers:list[NeoPixelLEDPinController] = [None] * NUM_PIXELS
     for i in range(NUM_PIXELS):
-        pinControllers[i] = NeoPixelLEDPinController(strip, i, (0, 255, 0))
+        pins[i] = NeoPixelLEDPin(strip, i)
+        pins[i].setOnColour((0, 255, 0))
+
+        pinControllers[i] = NeoPixelLEDPinController(pins[i])
         pinControllers[i].set_is_lit(False)
 
+    threading.Thread(target=__startApiLoop, daemon=True).start()
+
     while True:
-
-        pinControllers[2].set_is_lit(False)
-        pinControllers[0].set_is_lit(True)
+        for pin in pins:
+            if pin.getIsFlashing():
+                pin._isLit = not pin._isLit
+            else:
+                pin._isLit = False
+            pin.renderTick()
         strip.show()
-        sleep(5)
-
-        pinControllers[0].set_is_lit(False)
-        pinControllers[1].set_is_lit(True)
-        strip.show()
-        sleep(5)
-
-        pinControllers[1].set_is_lit(False)
-        pinControllers[2].set_is_lit(True)
-        strip.show()
-        sleep(5)
+        sleep(0.5)
