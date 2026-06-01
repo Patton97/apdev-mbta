@@ -9,6 +9,7 @@ class ImmutableStopMetadata(object):
     name:str
     standardised_location_x:int
     standardised_location_y:int
+    pin_index:int
     label_placement:LabelPlacement
     primary_colour:str
     secondary_colour:str

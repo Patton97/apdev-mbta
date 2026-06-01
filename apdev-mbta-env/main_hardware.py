@@ -1,49 +1,55 @@
 import board
 import neopixel
 from time import sleep
-import asyncio
-import threading
 
-from apdev_led_neopixel.NeoPixelLEDPinController import NeoPixelLEDPinController
+from apdev_mbta_data.ImmutableLineMetadata import ImmutableLineMetadata
 
+from apdev_led.ILEDPinController import ILEDPinController
+
+from apdev_led_neopixel.NeoPixelLEDPinFactory import NeoPixelLEDPinFactory
 from apdev_led_neopixel.NeoPixelLEDPin import NeoPixelLEDPin
+from apdev_led_neopixel.NeoPixelLEDPinController import NeoPixelLEDPinController
 
 NUM_PIXELS = 50
 BRIGHTNESS = 0.05
 GPIO_DATA_PIN = board.D21
 
-strip:neopixel.NeoPixel = neopixel.NeoPixel(GPIO_DATA_PIN, NUM_PIXELS, brightness=BRIGHTNESS, auto_write=False, pixel_order=neopixel.RGB)
-pins:list[NeoPixelLEDPin] = [None] * NUM_PIXELS
-pinControllers:list[NeoPixelLEDPinController] = [None] * NUM_PIXELS
+__strip:neopixel.NeoPixel = neopixel.NeoPixel(GPIO_DATA_PIN, NUM_PIXELS, brightness=BRIGHTNESS, auto_write=False, pixel_order=neopixel.RGB)
+__pins:list[NeoPixelLEDPin] = []
+__controllersKeyedByStopID:dict[str, ILEDPinController] = {}
 
-async def __apiLoop():
+def startPixels(lines:list[ImmutableLineMetadata]):
+    for i in range(len(lines)):
+        __addPinsForStops(lines[i], __strip)
+
+    global __pins
     while True:
-        NUM_FLASHING_PINS = 3
-        for i in range(NUM_FLASHING_PINS):
-            for pinController in pinControllers:
-                pinController.set_is_lit(False)
-            pinControllers[i].set_is_lit(True)
-            await asyncio.sleep(5)
-
-def __startApiLoop():
-    asyncio.run(__apiLoop())
-
-def run():
-    for i in range(NUM_PIXELS):
-        pins[i] = NeoPixelLEDPin(strip, i)
-        pins[i].setOnColour((0, 255, 0))
-
-        pinControllers[i] = NeoPixelLEDPinController(pins[i])
-        pinControllers[i].set_is_lit(False)
-
-    threading.Thread(target=__startApiLoop, daemon=True).start()
-
-    while True:
-        for pin in pins:
+        for pin in __pins:
             if pin.getIsFlashing():
                 pin._isLit = not pin._isLit
             else:
                 pin._isLit = False
             pin.renderTick()
-        strip.show()
+        __strip.show()
         sleep(0.5)
+
+def getAllLEDPinControllers():
+    global __controllersKeyedByStopID
+    return __controllersKeyedByStopID.values()
+
+def getLEDPinController(stopID:str) -> ILEDPinController:
+    global __controllersKeyedByStopID
+    return __controllersKeyedByStopID.get(stopID, None)
+
+def __addPinsForStops(lineMetadata:ImmutableLineMetadata, strip:neopixel.NeoPixel):
+    pinFactory = NeoPixelLEDPinFactory()
+    pinsKeyedByStationID:dict[str, NeoPixelLEDPin] = pinFactory.createAllPins(
+        lineMetadata.stops,
+        strip
+    )
+
+    for id, pin in pinsKeyedByStationID.items():
+        global __controllersKeyedByStopID
+        __controllersKeyedByStopID[id] = NeoPixelLEDPinController(pin)
+        __controllersKeyedByStopID[id].set_is_lit(True)
+        __pins.append(pin)

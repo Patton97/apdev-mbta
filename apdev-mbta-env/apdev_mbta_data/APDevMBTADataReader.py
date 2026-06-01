@@ -46,6 +46,7 @@ class APDevMBTADataReader(object):
             stop_json_obj["name"],
             stop_json_obj["standardised_location_x"],
             stop_json_obj["standardised_location_y"],
+            stop_json_obj["pin_index"],
             label_placement,
             line_json_obj["primary_colour"],
             line_json_obj["secondary_colour"]
