@@ -1,4 +1,2 @@
-- TODO AP: Reorganise apdev_led_visualiser to move mbta-specific classes into apdev_mbta_led_visualiser 
-- TODO AP: Figure out the "Vehicle is stopped at an unknown stop" issue
+- TODO AP: Reorganise apdev_led_visualiser to move mbta-specific classes into apdev_mbta_led_visualiser
 - TODO AP: Add data for all other lines & stops
-- TODO AP: Decide how to handle multie-line stops. 2 separate pins? 2 anims sharing a pin? Something else?

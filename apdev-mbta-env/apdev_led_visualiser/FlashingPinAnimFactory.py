@@ -32,10 +32,13 @@ class FlashingPinAnimFactory(object):
 
     def __updateOnLED(self:FlashingPinAnimFactory, pin:LEDPin, dt:float, timeUntilNextStage:float):
         if not pin.getIsFlashing() or len(pin.getColours()) == 0:
-            pin.__currentColourIndex = 0
+            pin._currentColourIndex = 0
             return
         
         timePerColour = self.__onLengthInMilliseconds / len(pin.getColours())
-        index = int(timeUntilNextStage / timePerColour)
-        pin.__currentColourIndex = index        
-        
+        elapsed = self.__onLengthInMilliseconds - timeUntilNextStage
+
+        index = int(elapsed / timePerColour)
+        index = min(index, len(pin.getColours()) - 1)
+
+        pin._currentColourIndex = index      

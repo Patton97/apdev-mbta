@@ -9,7 +9,7 @@ class LEDPin(SceneObject):
     def __init__(self:LEDPin):
         super().__init__()
 
-        self.__currentColourIndex:int = 0
+        self._currentColourIndex:int = 0
         self.__colours:list[str] = []
         self.__offColour:str = 'white'
 
@@ -45,8 +45,8 @@ class LEDPin(SceneObject):
         self.__isLit = isLit
 
     def __getColour(self:LEDPin) -> str:
-        if self.__isLit and self.__currentColourIndex < len(self.__colours):
-            return self.__colours[self.__currentColourIndex]
+        if self.__isLit and self._currentColourIndex < len(self.__colours):
+            return self.__colours[self._currentColourIndex]
         return self.__offColour
 
     def __getRadius(self:LEDPin) -> int:

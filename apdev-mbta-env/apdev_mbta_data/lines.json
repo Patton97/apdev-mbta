@@ -1,6 +1,16 @@
 {
     "lines": 
     [
+        {
+            "line_id" : "Red",
+            "primary_colour" : "red",
+            "secondary_colour" : "red3",
+            "line_anchors" :
+            [
+                { "x" : 31, "y" : 22 },
+                { "x" : 37, "y" : 16 }
+            ]
+        },
 
         {
             "line_id" : "Green-B",
@@ -43,16 +53,6 @@
             "line_id" : "Green-E",
             "primary_colour" : "chartreuse",
             "secondary_colour" : "chartreuse4",
-            "line_anchors" :
-            [
-                
-            ]
-        },
-
-        {
-            "line_id" : "Orange",
-            "primary_colour" : "orange",
-            "secondary_colour" : "orange",
             "line_anchors" :
             [
                 
