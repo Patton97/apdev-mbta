@@ -38,13 +38,16 @@ class ImmutableRoute(object):
     stops:list[mbta_stops.ImmutableStop]
 
 def getRoutes(session:requests.Session, params:GetRoutesParams) -> list[ImmutableRoute]:
-    response = session.get(
-        utils.MBTA_API_DOMAIN + '/routes',
-        params = params._getDictForMBTAAPI(),
-        headers = utils.getDefaultHeaders()
-    )
-    responseJsonObj = json.loads(response.content)
-    return __parseGetRoutesResponseContent(responseJsonObj)
+    try:
+        response = session.get(
+            utils.MBTA_API_DOMAIN + '/routes',
+            params = params._getDictForMBTAAPI(),
+            headers = utils.getDefaultHeaders()
+        )
+        responseJsonObj = json.loads(response.content)
+        return __parseGetRoutesResponseContent(responseJsonObj)
+    except:
+        return []
 
 def __parseGetRoutesResponseContent(response:dict) -> list[ImmutableRoute]:
     routes:list[ImmutableRoute] = []

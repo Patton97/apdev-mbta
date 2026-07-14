@@ -1,0 +1,62 @@
+{
+    "lines": 
+    [
+        {
+            "line_id" : "Red",
+            "primary_colour" : "red",
+            "secondary_colour" : "red3",
+            "line_anchors" :
+            [
+                { "x" : 31, "y" : 22 },
+                { "x" : 37, "y" : 16 }
+            ]
+        },
+
+        {
+            "line_id" : "Green-B",
+            "primary_colour" : "chartreuse",
+            "secondary_colour" : "chartreuse4",
+            "line_anchors" :
+            [
+                
+            ]
+        },
+
+        {
+            "line_id" : "Green-C",
+            "primary_colour" : "chartreuse",
+            "secondary_colour" : "chartreuse4",
+            "line_anchors" :
+            [
+                
+            ]
+        },
+
+        {
+            "line_id" : "Green-D",
+            "primary_colour" : "chartreuse",
+            "secondary_colour" : "chartreuse4",
+            "line_anchors" :
+            [
+                { "x" :  4, "y" :  1 },
+                { "x" : 18, "y" : 15 },
+                { "x" : 30, "y" : 15 },
+                { "x" : 31, "y" : 16 },
+                { "x" : 40, "y" : 25 },
+                { "x" : 40, "y" : 29 },
+                { "x" : 35, "y" : 34 },
+                { "x" : 31, "y" : 34 }
+            ]
+        },
+
+        {
+            "line_id" : "Green-E",
+            "primary_colour" : "chartreuse",
+            "secondary_colour" : "chartreuse4",
+            "line_anchors" :
+            [
+                
+            ]
+        }
+    ]
+}

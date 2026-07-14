@@ -9,5 +9,4 @@ class ImmutableLineMetadata(object):
     id:str
     primary_colour:str
     secondary_colour:str
-    stops:tuple[ImmutableStopMetadata]
     line_anchors:tuple[ImmutableVector2]

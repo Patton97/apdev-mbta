@@ -13,3 +13,7 @@ class ILEDPinController(ABC):
     @abstractmethod
     def toggle_is_lit(self) -> bool:
         pass
+
+    @abstractmethod
+    def set_colours(self, colours:list[str]):
+        pass
